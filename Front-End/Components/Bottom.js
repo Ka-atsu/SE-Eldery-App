@@ -6,11 +6,11 @@ const BottomComponent = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Button 
-                title="View Details" 
+                title="Settings" 
                 onPress={() => navigation.navigate('Details')} 
                 buttonStyle={styles.button} 
                 titleStyle={styles.buttonTitle} 
-                icon={<Icon name="info" size={20} color="white" />} 
+                icon={<Icon name="settings" size={20} color="white" />} 
                 iconContainerStyle={styles.iconContainer} 
             />
         </View>
