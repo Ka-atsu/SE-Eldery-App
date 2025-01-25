@@ -1,49 +1,52 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const BottomComponent = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <Button 
-                title="Settings" 
-                onPress={() => navigation.navigate('Details')} 
-                buttonStyle={styles.button} 
-                titleStyle={styles.buttonTitle} 
-                icon={<Icon name="settings" size={20} color="white" />} 
-                iconContainerStyle={styles.iconContainer} 
-            />
+            <TouchableOpacity
+                style={styles.gradientButton}
+                onPress={() => navigation.navigate('Details')}
+                activeOpacity={0.8}
+            >
+                <LinearGradient
+                    colors={['#28a745', '#218838']}
+                    style={styles.gradientBackground}
+                >
+                    <Icon name="settings" size={50} color="white" style={styles.icon} />
+                </LinearGradient>
+            </TouchableOpacity>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'flex-end', 
-        alignItems: 'center', 
-        paddingBottom: 20, 
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
-    button: {
-        width: 200, 
-        height: 60, 
-        backgroundColor: '#28a745', 
-        borderRadius: 30, 
+    gradientButton: {
+        width: 75, 
+        height: 75, 
+        borderRadius: 40, 
+        overflow: 'hidden',
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 5,
+        shadowRadius: 6,
+        elevation: 5, // Adds shadow on Android
     },
-    buttonTitle: {
-        fontSize: 18, 
-        fontWeight: 'bold', 
+    gradientBackground: {
+        flex: 1,
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        borderRadius: 30, // Keeps gradient corners rounded
     },
-    iconContainer: {
-        marginRight: 10, 
+    icon: {
+        // No extra styling needed for centering
     },
 });
 

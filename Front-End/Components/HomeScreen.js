@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
+import { Audio } from 'expo-av';
 import BottomComponent from './Bottom';
 
 const { width } = Dimensions.get('window');
@@ -8,15 +9,23 @@ const { width } = Dimensions.get('window');
 const HomeScreen = ({ navigation }) => {
     console.log("App executed");
 
-    const handlePress = async (type) => {
+    const playSound = async () => {
         try {
-            if (type === 'notify') {
-                console.log('Notify Others Pressed');
-            } else if (type === 'emergency') {
-                console.log('Emergency Pressed');
-            }
+            const { sound } = await Audio.Sound.createAsync(
+                require('../assets/notifalert.mp3') 
+            );
+            await sound.playAsync();
         } catch (error) {
-            console.error('Error handling button press:', error);
+            console.error('Error playing sound:', error);
+        }
+    };
+
+    const handlePress = (type) => {
+        if (type === 'notify') {
+            console.log('Notify Others Pressed');
+            playSound();
+        } else if (type === 'emergency') {
+            console.log('Emergency Pressed');
         }
     };
 
@@ -39,8 +48,8 @@ const HomeScreen = ({ navigation }) => {
                 Press the button below to notify someone in case of an emergency.
             </Text>
             <View style={styles.buttonContainer}>
-                {renderButton('Notify Others', 'notifications', '#007bff', 'notify')}
-                {renderButton('Emergency', 'warning', 'red', 'emergency')}
+            {renderButton('Notify Others', 'notifications', '#4682B4', 'notify')}
+            {renderButton('Emergency', 'warning', '#FF4500', 'emergency')}
             </View>
             <BottomComponent navigation={navigation} />
         </View>
@@ -91,7 +100,7 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     buttonTitle: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
         color: 'white',
         marginTop: 10,
