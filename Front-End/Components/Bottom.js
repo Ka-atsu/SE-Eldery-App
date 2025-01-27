@@ -4,52 +4,34 @@ import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const BottomComponent = ({ navigation, disableButton }) => {
+    const renderButton = (iconName, gradientColors, navigateTo, key) => {
+        // Conditionally render the button based on the `disableButton` prop
+        if (disableButton === navigateTo) {
+            return null; // Do not render the button if it's disabled
+        }
+
+        return (
+            <TouchableOpacity
+                key={key}
+                style={styles.gradientButton}
+                onPress={() => navigation.navigate(navigateTo)}
+                activeOpacity={0.8}
+            >
+                <LinearGradient
+                    colors={gradientColors}
+                    style={styles.gradientBackground}
+                >
+                    <Icon name={iconName} size={30} color="white" />
+                </LinearGradient>
+            </TouchableOpacity>
+        );
+    };
 
     return (
         <View style={styles.container}>
-            {/* Navigate to Home */}
-            <TouchableOpacity
-                style={styles.gradientButton}
-                onPress={() => navigation.navigate('Home')}
-                activeOpacity={0.8}
-                disabled={disableButton === "Home"}
-            >
-                <LinearGradient
-                    colors={['#007bff', '#0056b3']}
-                    style={styles.gradientBackground}
-                >
-                    <Icon name="home" size={30} color="white" />
-                </LinearGradient>
-            </TouchableOpacity>
-
-            {/* Navigate to Emergency */}
-            <TouchableOpacity
-                style={styles.gradientButton}
-                onPress={() => navigation.navigate('Emergency')}
-                activeOpacity={0.8}
-                disabled={disableButton === 'Emergency'}
-            >
-                <LinearGradient
-                    colors={['#dc3545', '#b21f2d']}
-                    style={styles.gradientBackground}
-                >
-                    <Icon name="warning" size={30} color="white" />
-                </LinearGradient>
-            </TouchableOpacity>
-
-            {/* Navigate to Settings */}
-            <TouchableOpacity
-                style={styles.gradientButton}
-                onPress={() => navigation.navigate('Settings')}
-                activeOpacity={0.8}
-            >
-                <LinearGradient
-                    colors={['#28a745', '#218838']}
-                    style={styles.gradientBackground}
-                >
-                    <Icon name="settings" size={30} color="white" />
-                </LinearGradient>
-            </TouchableOpacity>
+            {renderButton('home', ['#007bff', '#0056b3'], 'Home', 'home')}
+            {renderButton('warning', ['#dc3545', '#b21f2d'], 'Emergency', 'emergency')}
+            {renderButton('settings', ['#28a745', '#218838'], 'Settings', 'settings')}
         </View>
     );
 };
