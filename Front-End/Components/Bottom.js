@@ -3,7 +3,8 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const BottomComponent = ({ navigation }) => {
+const BottomComponent = ({ navigation, disableButton }) => {
+
     return (
         <View style={styles.container}>
             {/* Navigate to Home */}
@@ -11,6 +12,7 @@ const BottomComponent = ({ navigation }) => {
                 style={styles.gradientButton}
                 onPress={() => navigation.navigate('Home')}
                 activeOpacity={0.8}
+                disabled={disableButton === "Home"}
             >
                 <LinearGradient
                     colors={['#007bff', '#0056b3']}
@@ -25,6 +27,7 @@ const BottomComponent = ({ navigation }) => {
                 style={styles.gradientButton}
                 onPress={() => navigation.navigate('Emergency')}
                 activeOpacity={0.8}
+                disabled={disableButton === 'Emergency'}
             >
                 <LinearGradient
                     colors={['#dc3545', '#b21f2d']}

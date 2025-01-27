@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.buttonContainer}>
                 {renderButton('Notify Others', 'notifications', '#4682B4', 'notify')}
             </View>
-            <BottomComponent navigation={navigation} />
+            <BottomComponent navigation={navigation} disableButton={"Home"} />
         </View>
     );
 };

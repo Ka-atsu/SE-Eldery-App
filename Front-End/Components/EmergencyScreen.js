@@ -6,6 +6,7 @@ import BottomComponent from './Bottom';
 const { width } = Dimensions.get('window');
 
 const EmergencyScreen = ({ navigation }) => {
+
     const handleEmergency = () => {
         console.log('Emergency Pressed');
     };
@@ -20,7 +21,7 @@ const EmergencyScreen = ({ navigation }) => {
             <Icon name={iconName} color="white" size={50} />
             <Text style={styles.buttonTitle}>{title}</Text>
         </TouchableOpacity>
-    );
+    ); 
 
     return (
         <View style={styles.container}>
@@ -31,7 +32,7 @@ const EmergencyScreen = ({ navigation }) => {
             <View style={styles.buttonContainer}>
                 {renderButton('Emergency', 'warning', '#FF4500', handleEmergency)}
             </View>
-            <BottomComponent navigation={navigation} />
+            <BottomComponent navigation={navigation} disableButton={'Emergency'} />
         </View>
     );
 };
