@@ -1,34 +1,19 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
-import { Audio } from 'expo-av';
 import BottomComponent from './Bottom';
 
 const { width } = Dimensions.get('window');
 
-const HomeScreen = ({ navigation }) => {
-    const playSound = async () => {
-        try {
-            const { sound } = await Audio.Sound.createAsync(
-                require('../assets/notifalert.mp3')
-            );
-            await sound.playAsync();
-        } catch (error) {
-            console.error('Error playing sound:', error);
-        }
+const EmergencyScreen = ({ navigation }) => {
+    const handleEmergency = () => {
+        console.log('Emergency Pressed');
     };
 
-    const handlePress = (type) => {
-        if (type === 'notify') {
-            console.log('Notify Others Pressed');
-            playSound();
-        }
-    };
-
-    const renderButton = (title, iconName, backgroundColor, type) => (
+    const renderButton = (title, iconName, backgroundColor, onPress) => (
         <TouchableOpacity
             style={[styles.circleButton, { backgroundColor }]}
-            onPress={() => handlePress(type)}
+            onPress={onPress}
             accessibilityLabel={title}
             accessibilityRole="button"
         >
@@ -39,12 +24,12 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text h4 style={styles.header}>Notify Mode</Text>
+            <Text h4 style={styles.header}>Emergency Mode</Text>
             <Text style={styles.description}>
-                Press the button below to notify someone.
+                Press the button below for an emergency alert.
             </Text>
             <View style={styles.buttonContainer}>
-                {renderButton('Notify Others', 'notifications', '#4682B4', 'notify')}
+                {renderButton('Emergency', 'warning', '#FF4500', handleEmergency)}
             </View>
             <BottomComponent navigation={navigation} />
         </View>
@@ -101,4 +86,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+export default EmergencyScreen;
