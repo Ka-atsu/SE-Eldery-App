@@ -32,13 +32,14 @@ const BottomComponent = ({ navigation, disableButton }) => {
             {renderButton('home', ['#007bff', '#0056b3'], 'Home', 'home')}
             {renderButton('warning', ['#dc3545', '#b21f2d'], 'Emergency', 'emergency')}
             {renderButton('settings', ['#28a745', '#218838'], 'Settings', 'settings')}
+            {renderButton('account-circle', ['#ffc107', '#ff8f00'], 'Profile', 'profile')} {/* New Profile button */}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row', 
+        flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         width: '100%',
