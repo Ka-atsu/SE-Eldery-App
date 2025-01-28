@@ -1,31 +1,26 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
   const [name, setName] = useState('John Doe');
   const [email, setEmail] = useState('johndoe@example.com');
-  const [profilePic, setProfilePic] = useState('https://randomuser.me/api/portraits/men/1.jpg'); // Sample profile picture URL
-  const [emergencyContact, setEmergencyContact] = useState(''); // State for emergency contact number
-  const [isEditingContact, setIsEditingContact] = useState(false); // State to toggle edit mode for contact number
+  const [profilePic, setProfilePic] = useState('https://randomuser.me/api/portraits/men/1.jpg');
+  const [emergencyContact, setEmergencyContact] = useState('');
+  const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode for all fields
 
-  const navigation = useNavigation(); // Initialize navigation hook
+  const navigation = useNavigation();
 
   const handleSave = () => {
-    // Logic for saving profile (could be an API call or state update)
+    // Logic for saving profile
     console.log('Profile saved:', { name, email, emergencyContact });
+    setIsEditing(false); // Exit edit mode after saving
   };
 
   const handleEditProfilePic = () => {
-    // Logic for editing profile picture, like launching an image picker
+    // Logic for editing profile picture
     console.log('Edit profile picture');
-  };
-
-  const handleSaveEmergencyContact = () => {
-    // Save the emergency contact and toggle edit mode
-    setIsEditingContact(false);
-    console.log('Emergency contact saved:', emergencyContact);
   };
 
   return (
@@ -45,23 +40,31 @@ const ProfileScreen = () => {
 
       {/* Profile Information */}
       <Text style={styles.label}>Name</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-      />
+      {isEditing ? (
+        <TextInput
+          style={styles.input}
+          value={name}
+          onChangeText={setName}
+        />
+      ) : (
+        <Text style={styles.inputText}>{name}</Text>
+      )}
 
       <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
+      {isEditing ? (
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+        />
+      ) : (
+        <Text style={styles.inputText}>{email}</Text>
+      )}
 
       {/* Emergency Contact Information */}
       <Text style={styles.label}>Emergency Contact</Text>
-      {isEditingContact ? (
+      {isEditing ? (
         <TextInput
           style={styles.input}
           value={emergencyContact}
@@ -70,23 +73,21 @@ const ProfileScreen = () => {
           placeholder="Enter emergency contact"
         />
       ) : (
-        <Text style={styles.input}>{emergencyContact || "No emergency contact set"}</Text>
+        <Text style={styles.inputText}>{emergencyContact || "No emergency contact set"}</Text>
       )}
 
-      {/* Conditional buttons to edit or save the emergency contact */}
-      {isEditingContact ? (
+      {/* Conditional buttons to edit or save the profile */}
+      {isEditing ? (
         <>
-          <Button title="Save Emergency Contact" onPress={handleSaveEmergencyContact} />
-          <Button title="Cancel" onPress={() => setIsEditingContact(false)} />
+          <Button title="Save Profile" onPress={handleSave} />
+          <View style={styles.buttonSpacing} /> {/* Add spacing here */}
+          <Button title="Cancel" onPress={() => setIsEditing(false)} />
         </>
       ) : (
-        <TouchableOpacity onPress={() => setIsEditingContact(true)}>
-          <Text style={styles.editText}>Edit Emergency Contact</Text>
+        <TouchableOpacity onPress={() => setIsEditing(true)}>
+          <Text style={styles.editText}>Edit Profile</Text>
         </TouchableOpacity>
       )}
-
-      {/* Save Profile Button */}
-      <Button title="Save Profile" onPress={handleSave} />
 
       {/* Log out button (optional) */}
       <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Login')}>
@@ -145,6 +146,13 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginBottom: 20,
   },
+  inputText: {
+    width: '100%',
+    height: 40,
+    paddingLeft: 10,
+    marginBottom: 20,
+    lineHeight: 40, // Align text vertically
+  },
   editText: {
     color: '#007bff',
     textAlign: 'center',
@@ -160,6 +168,9 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  buttonSpacing: {
+    marginVertical: 10, 
   },
 });
 

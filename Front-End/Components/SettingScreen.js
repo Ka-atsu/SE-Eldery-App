@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
   },
   title: {
-    fontSize: 28, // Larger font size
+    fontSize: 28, 
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20, // Increased padding for touch targets
+    paddingVertical: 20, 
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
   settingText: {
-    fontSize: 20, // Larger font for readability
-    fontWeight: '500', // Semi-bold for emphasis
+    fontSize: 20, 
+    fontWeight: '500', 
     color: '#333',
   },
   goBackButton: {

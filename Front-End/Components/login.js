@@ -4,7 +4,7 @@ import { View, TextInput, Button, Alert, StyleSheet, Text } from 'react-native';
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // Added state for confirm password
+  const [confirmPassword, setConfirmPassword] = useState(''); 
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleLogin = () => {
