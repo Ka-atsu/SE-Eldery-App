@@ -6,22 +6,9 @@ import BottomComponent from './Bottom';
 const { width } = Dimensions.get('window');
 
 const EmergencyScreen = ({ navigation }) => {
-
     const handleEmergency = () => {
         console.log('Emergency Pressed');
     };
-
-    const renderButton = (title, iconName, backgroundColor, onPress) => (
-        <TouchableOpacity
-            style={[styles.circleButton, { backgroundColor }]}
-            onPress={onPress}
-            accessibilityLabel={title}
-            accessibilityRole="button"
-        >
-            <Icon name={iconName} color="white" size={50} />
-            <Text style={styles.buttonTitle}>{title}</Text>
-        </TouchableOpacity>
-    ); 
 
     return (
         <View style={styles.container}>
@@ -29,9 +16,23 @@ const EmergencyScreen = ({ navigation }) => {
             <Text style={styles.description}>
                 Press the button below for an emergency alert.
             </Text>
+
             <View style={styles.buttonContainer}>
-                {renderButton('Emergency', 'warning', '#FF4500', handleEmergency)}
+                {/* Emergency Button with Inner Shadow Effect */}
+                <TouchableOpacity
+                    style={styles.circleButton}
+                    onPress={handleEmergency}
+                    accessibilityLabel="Emergency Button"
+                    accessibilityRole="button"
+                >
+                    {/* Inner Shadow Effect inside the Button */}
+                    <View style={styles.innerShadow}>
+                        <Icon name="warning" color="white" size={60} />
+                        <Text style={styles.buttonTitle}>Emergency</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
+
             <BottomComponent navigation={navigation} disableButton={'Emergency'} />
         </View>
     );
@@ -42,14 +43,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#f8f9fa',
-        padding: 20,
+        backgroundColor: '#ffffff',
         marginTop: 20,
     },
     header: {
+        marginTop: 20,
         marginBottom: 20,
         textAlign: 'center',
-        fontSize: 28,
+        fontSize: 32,
+        fontWeight: 'bold',
         color: '#333',
     },
     description: {
@@ -61,29 +63,39 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 40,
     },
     circleButton: {
-        width: width * 0.6,
-        height: width * 0.6,
-        borderRadius: (width * 0.6) / 2,
+        width: width * 0.7,
+        height: width * 0.7,
+        borderRadius: (width * 0.7) / 2,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 5,
-        marginBottom: 30,
+        backgroundColor: '#FF4500', // Emergency red
+        elevation: 12, // Outer shadow
+        shadowColor: '#8B0000', // Darker red shadow for outer depth
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.6,
+        shadowRadius: 12,
+        borderWidth: 3,
+        borderColor: '#FF6347', // Slightly lighter red for a glossy look
+    },
+    innerShadow: {
+        width: '95%',
+        height: '95%',
+        borderRadius: (width * 0.7) / 2,
+        backgroundColor: '#FF5733', // Slightly lighter red for inner depth
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#D84315', // Inner shadow effect (darker red)
+        shadowOffset: { width: 0, height: -5 }, // Shadow positioned inside
+        shadowOpacity: 0.4,
+        shadowRadius: 8,
     },
     buttonTitle: {
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: 'bold',
         color: 'white',
-        marginTop: 10,
     },
 });
 

@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const BottomComponent = ({ navigation, disableButton }) => {
     const renderButton = (iconName, gradientColors, navigateTo, key) => {
-        // Conditionally render the button based on the `disableButton` prop
         if (disableButton === navigateTo) {
-            return null; // Do not render the button if it's disabled
+            return null; // Hide button if it's disabled
         }
 
         return (
@@ -32,7 +31,7 @@ const BottomComponent = ({ navigation, disableButton }) => {
             {renderButton('home', ['#007bff', '#0056b3'], 'Home', 'home')}
             {renderButton('warning', ['#dc3545', '#b21f2d'], 'Emergency', 'emergency')}
             {renderButton('settings', ['#28a745', '#218838'], 'Settings', 'settings')}
-            {renderButton('account-circle', ['#ffc107', '#ff8f00'], 'Profile', 'profile')} {/* New Profile button */}
+            {renderButton('account-circle', ['#ffc107', '#ff8f00'], 'Profile', 'profile')}
         </View>
     );
 };
@@ -43,27 +42,28 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         width: '100%',
-        paddingVertical: 10,
-        backgroundColor: '#f8f9fa',
+        paddingVertical: 12, 
+        backgroundColor: '#ffffff',
         borderTopWidth: 1,
         borderTopColor: '#ddd',
     },
     gradientButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
+        width: 50, // Adjusted width
+        height: 50, // Adjusted height
+        borderRadius: 32.5, 
         overflow: 'hidden',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
+        shadowOpacity: 0.10,
+        shadowRadius: 100,
         elevation: 5,
     },
     gradientBackground: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 30,
+        borderRadius: 32.5, 
+        padding: 5, 
     },
 });
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 const SettingsScreen = ({ navigation }) => {
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
@@ -10,6 +11,11 @@ const SettingsScreen = ({ navigation }) => {
 
   return (
     <View style={[styles.container, isDarkMode && styles.darkContainer]}>
+      {/* Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Icon name="arrow-back" size={30} color="#007bff" />
+      </TouchableOpacity>
+
       <Text style={[styles.title, isDarkMode && styles.darkText]}>Settings</Text>
 
       {/* Notifications Setting */}
@@ -24,35 +30,23 @@ const SettingsScreen = ({ navigation }) => {
       </View>
 
       {/* Account Management */}
-      <TouchableOpacity
-        style={styles.settingItem}
-        onPress={() => alert('Account Settings')}
-      >
+      <TouchableOpacity style={styles.settingItem} onPress={() => alert('Account Settings')}>
         <Text style={[styles.settingText, isDarkMode && styles.darkText]}>Account Settings</Text>
       </TouchableOpacity>
 
       {/* Privacy Policy */}
-      <TouchableOpacity
-        style={styles.settingItem}
-        onPress={() => alert('Privacy Policy')}
-      >
+      <TouchableOpacity style={styles.settingItem} onPress={() => alert('Privacy Policy')}>
         <Text style={[styles.settingText, isDarkMode && styles.darkText]}>Privacy Policy</Text>
       </TouchableOpacity>
 
       {/* About Section */}
-      <TouchableOpacity
-        style={styles.settingItem}
-        onPress={() => alert('App Version: 1.0.0')}
-      >
+      <TouchableOpacity style={styles.settingItem} onPress={() => alert('App Version: 1.0.0')}>
         <Text style={[styles.settingText, isDarkMode && styles.darkText]}>About</Text>
       </TouchableOpacity>
 
-      {/* Go Back Button */}
-      <TouchableOpacity
-        style={styles.goBackButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.goBackButtonText}>Back</Text>
+      {/* Help Button */}
+      <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('Help')}>
+        <Text style={[styles.settingText, isDarkMode && styles.darkText]}>Help</Text>
       </TouchableOpacity>
     </View>
   );
@@ -61,47 +55,39 @@ const SettingsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 25,
-    backgroundColor: '#f8f9fa',
+    padding: 20,
+    backgroundColor: '#ffffff',
   },
   darkContainer: {
-    backgroundColor: '#121212',
+    backgroundColor: '#333',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    backgroundColor: 'transparent',
+    padding: 10,
   },
   title: {
-    fontSize: 28, 
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 30,
+    marginBottom: 20,
     textAlign: 'center',
-    color: '#333',
-  },
-  darkText: {
-    color: '#fff',
+    marginTop: 60, // Ensures title is properly aligned below the back button
   },
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20, 
+    padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#ccc',
   },
   settingText: {
-    fontSize: 20, 
-    fontWeight: '500', 
-    color: '#333',
+    fontSize: 18,
   },
-  goBackButton: {
-    marginTop: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 15,
-    borderRadius: 10,
-    backgroundColor: '#007bff',
-  },
-  goBackButtonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
+  darkText: {
+    color: '#ffffff',
   },
 });
 

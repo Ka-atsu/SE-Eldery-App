@@ -24,7 +24,7 @@ const GetStartedScreen = ({ navigation }) => {
 
       <Button
         title="Let's Go!"
-        onPress={() => navigation.navigate('Home')} // Navigate to the Home screen
+        onPress={() => navigation.navigate('Login')} // Navigate to the Home screen
       />
     </ScrollView>
   );

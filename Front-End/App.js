@@ -7,6 +7,7 @@ import EmergencyScreen from './Components/EmergencyScreen';
 import LoginScreen from './Components/login';
 import ProfileScreen from './Components/ProfileScreen';
 import GetStartedScreen from './Components/GetStartedScreen';
+import HelpScreen from './Components/HelpScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <Stack.Screen name="Emergency" component={EmergencyScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Help" component={HelpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

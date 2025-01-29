@@ -4,7 +4,8 @@ import { View, TextInput, Button, Alert, StyleSheet, Text } from 'react-native';
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); 
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [emergencyContact, setEmergencyContact] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleLogin = () => {
@@ -16,18 +17,17 @@ const LoginScreen = () => {
   };
 
   const handleRegister = () => {
-    if (!username || !password || !confirmPassword) {
+    if (!username || !password || !confirmPassword || !emergencyContact) {
       Alert.alert('Please fill in all fields');
     } else if (password !== confirmPassword) {
       Alert.alert('Passwords do not match');
     } else {
-      Alert.alert('Registration Successful');
+      Alert.alert(`Registration Successful\nEmergency Contact: ${emergencyContact}`);
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* Toggle between Login and Register forms */}
       {isRegistering ? (
         <>
           <Text style={styles.header}>Register</Text>
@@ -51,7 +51,14 @@ const LoginScreen = () => {
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
-          <Button title="Register" onPress={handleRegister} />  {/* Register Button */}
+          <TextInput
+            style={styles.input}
+            placeholder="Emergency Contact (Phone Number)"
+            keyboardType="phone-pad"
+            value={emergencyContact}
+            onChangeText={setEmergencyContact}
+          />
+          <Button title="Register" onPress={handleRegister} />
           <Text style={styles.switchText} onPress={() => setIsRegistering(false)}>
             Already have an account? Login here.
           </Text>
@@ -93,19 +100,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     marginBottom: 30,
+    fontWeight: 'bold',
   },
   input: {
-    height: 40,
+    height: 45,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 15,
     paddingLeft: 10,
-    borderRadius: 5,
+    borderRadius: 8,
+    backgroundColor: '#fff',
   },
   switchText: {
     color: '#007BFF',
     textAlign: 'center',
     marginTop: 10,
+    fontWeight: 'bold',
   },
 });
 

@@ -25,27 +25,29 @@ const HomeScreen = ({ navigation }) => {
         }
     };
 
-    const renderButton = (title, iconName, backgroundColor, type) => (
-        <TouchableOpacity
-            style={[styles.circleButton, { backgroundColor }]}
-            onPress={() => handlePress(type)}
-            accessibilityLabel={title}
-            accessibilityRole="button"
-        >
-            <Icon name={iconName} color="white" size={50} />
-            <Text style={styles.buttonTitle}>{title}</Text>
-        </TouchableOpacity>
-    );
-
     return (
         <View style={styles.container}>
             <Text h4 style={styles.header}>Notify Mode</Text>
             <Text style={styles.description}>
                 Press the button below to notify someone.
             </Text>
+
             <View style={styles.buttonContainer}>
-                {renderButton('Notify Others', 'notifications', '#4682B4', 'notify')}
+                {/* Notify Button with Inner Shadow Effect */}
+                <TouchableOpacity
+                    style={styles.circleButton}
+                    onPress={() => handlePress('notify')}
+                    accessibilityLabel="Notify Button"
+                    accessibilityRole="button"
+                >
+                    {/* Inner Shadow Effect inside the Button */}
+                    <View style={styles.innerShadow}>
+                        <Icon name="notifications" color="white" size={60} />
+                        <Text style={styles.buttonTitle}>Notify Others</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
+
             <BottomComponent navigation={navigation} disableButton={"Home"} />
         </View>
     );
@@ -56,45 +58,57 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#f8f9fa',
-        padding: 20,
+        backgroundColor: '#ffffff',
         marginTop: 20,
     },
     header: {
+        marginTop: 20,
         marginBottom: 20,
         textAlign: 'center',
-        fontSize: 28,
+        fontSize: 32,
+        fontWeight: 'bold',
         color: '#333',
     },
     description: {
         textAlign: 'center',
-        fontSize: 22,
+        fontSize: 24,
         color: '#555',
     },
     buttonContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 40,
     },
     circleButton: {
-        width: width * 0.6,
-        height: width * 0.6,
-        borderRadius: (width * 0.6) / 2,
+        width: width * 0.7,
+        height: width * 0.7,
+        borderRadius: (width * 0.7) / 2,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 5,
-        marginBottom: 30,
+        backgroundColor: '#4682B4', // Blue tone for notification
+        elevation: 12, // Outer shadow
+        shadowColor: '#2F4F4F', // Darker blue shadow
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.6,
+        shadowRadius: 12,
+        borderWidth: 3,
+        borderColor: '#5F9EA0', // Slightly lighter blue for glossy look
+    },
+    innerShadow: {
+        width: '95%',
+        height: '95%',
+        borderRadius: (width * 0.7) / 2,
+        backgroundColor: '#5A9FD4', // Slightly lighter blue inside for depth
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#1E3F66', // Inner shadow effect (darker blue)
+        shadowOffset: { width: 0, height: -5 }, // Inner shadow
+        shadowOpacity: 0.4,
+        shadowRadius: 8,
     },
     buttonTitle: {
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: 'bold',
         color: 'white',
         marginTop: 10,
