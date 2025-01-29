@@ -4,10 +4,10 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'http://192.168.18.81:8000/api'; // Replace with your correct local IP
+const API_URL = 'http://192.168.18.81:8000/api'; 
 
 const LoginScreen = () => {
-  const navigation = useNavigation(); // Enable navigation
+  const navigation = useNavigation();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -68,6 +68,7 @@ const LoginScreen = () => {
       const token = response.data.token;
 
       await AsyncStorage.setItem('userToken', token); // ✅ Save token for later use
+      await AsyncStorage.setItem('emergencyContact', emergencyContact || '');
 
       Alert.alert('Login Successful');
 

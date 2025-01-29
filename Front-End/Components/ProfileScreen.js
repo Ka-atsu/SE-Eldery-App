@@ -52,7 +52,7 @@ const ProfileScreen = ({ navigation }) => {
 
       await axios.put(
         `${API_URL}/user/update`,
-        { name, emergency_contact: emergencyContact }, // ✅ Email is NOT being updated
+        { name, emergency_contact: emergencyContact }, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
