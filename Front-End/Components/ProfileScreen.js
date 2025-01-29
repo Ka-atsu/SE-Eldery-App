@@ -1,29 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const API_URL = "http://192.168.18.81:8000/api"; // Replace with your Laravel API IP
 
 const ProfileScreen = ({ navigation }) => {
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("johndoe@example.com");
   const [profilePic, setProfilePic] = useState("https://randomuser.me/api/portraits/men/1.jpg");
-  const [emergencyContact, setEmergencyContact] = useState("");
+  const [emergencyContact, setEmergencyContact] = useState("No emergency contact set");
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getPermission = async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission to access camera and gallery is required!");
-      }
-    };
-
-    getPermission();
+    getUserDetails();
   }, []);
 
-  const handleSave = () => {
-    console.log("Profile saved:", { name, email, emergencyContact });
-    setIsEditing(false);
+  const getUserDetails = async () => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem("userToken");
+
+      if (!token) {
+        Alert.alert("Error", "User not authenticated. Please log in.");
+        navigation.navigate("Login");
+        return;
+      }
+
+      const response = await axios.get(`${API_URL}/user`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const userData = response.data;
+      setName(userData.name);
+      setEmail(userData.email);
+      setEmergencyContact(userData.emergency_contact || "No emergency contact set");
+    } catch (error) {
+      console.log("Error fetching user details:", error);
+      Alert.alert("Error", "Failed to load user data.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      const token = await AsyncStorage.getItem("userToken");
+
+      await axios.put(
+        `${API_URL}/user/update`,
+        { name, emergency_contact: emergencyContact }, // ✅ Email is NOT being updated
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      Alert.alert("Success", "Profile updated successfully!");
+      setIsEditing(false);
+    } catch (error) {
+      console.log("Update Error:", error);
+      Alert.alert("Error", "Failed to update profile.");
+    }
   };
 
   const handleEditProfilePic = async () => {
@@ -49,61 +87,57 @@ const ProfileScreen = ({ navigation }) => {
         <Icon name="arrow-back" size={30} color="#007bff" />
       </TouchableOpacity>
 
-      {/* Profile Picture */}
-      <View style={styles.profilePicContainer}>
-        <Image source={{ uri: profilePic }} style={styles.profilePic} />
-        <TouchableOpacity style={styles.editButton} onPress={handleEditProfilePic}>
-          <Icon name="edit" size={20} color="#fff" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Profile Information */}
-      <Text style={styles.label}>Name</Text>
-      {isEditing ? (
-        <TextInput style={styles.input} value={name} onChangeText={setName} />
+      {loading ? (
+        <ActivityIndicator size="large" color="#007bff" />
       ) : (
-        <Text style={styles.inputText}>{name}</Text>
-      )}
+        <>
+          {/* Profile Picture */}
+          <View style={styles.profilePicContainer}>
+            <Image source={{ uri: profilePic }} style={styles.profilePic} />
+            <TouchableOpacity style={styles.editButton} onPress={handleEditProfilePic}>
+              <Icon name="edit" size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
 
-      <Text style={styles.label}>Email</Text>
-      {isEditing ? (
-        <TextInput style={styles.input} value={email} onChangeText={setEmail} keyboardType="email-address" />
-      ) : (
-        <Text style={styles.inputText}>{email}</Text>
-      )}
+          {/* Profile Information */}
+          <Text style={styles.label}>Email</Text>
+          <Text style={styles.inputTextNonEditable}>{email}</Text> {/* ✅ Email is now non-editable */}
 
-      <Text style={styles.label}>Emergency Contact</Text>
-      {isEditing ? (
-        <TextInput
-          style={styles.input}
-          value={emergencyContact}
-          onChangeText={setEmergencyContact}
-          keyboardType="phone-pad"
-          placeholder="Enter emergency contact"
-        />
-      ) : (
-        <Text style={styles.inputText}>{emergencyContact || "No emergency contact set"}</Text>
-      )}
+          <Text style={styles.label}>Name</Text>
+          {isEditing ? (
+            <TextInput style={styles.input} value={name} onChangeText={setName} />
+          ) : (
+            <Text style={styles.inputText}>{name}</Text>
+          )}
 
-      {/* Buttons with Better Spacing */}
-      {isEditing ? (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.buttonText}>Save Profile</Text>
+          <Text style={styles.label}>Emergency Contact</Text>
+          {isEditing ? (
+            <TextInput style={styles.input} value={emergencyContact} onChangeText={setEmergencyContact} keyboardType="phone-pad" />
+          ) : (
+            <Text style={styles.inputText}>{emergencyContact}</Text>
+          )}
+
+          {/* Buttons */}
+          {isEditing ? (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                <Text style={styles.buttonText}>Save Profile</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.cancelButton} onPress={() => setIsEditing(false)}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity onPress={() => setIsEditing(true)} style={styles.editProfileButton}>
+              <Text style={styles.buttonText}>Edit Profile</Text>
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.logoutButtonText}>Log out</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={() => setIsEditing(false)}>
-            <Text style={styles.buttonText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <TouchableOpacity onPress={() => setIsEditing(true)} style={styles.editProfileButton}>
-          <Text style={styles.buttonText}>Edit Profile</Text>
-        </TouchableOpacity>
+        </>
       )}
-
-      <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.logoutButtonText}>Log out</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -157,14 +191,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,
-    marginBottom: 20,
   },
   inputText: {
     width: '100%',
-    height: 40,
     paddingLeft: 10,
-    marginBottom: 20,
-    lineHeight: 40,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -212,6 +242,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  inputTextNonEditable: {
+    alignSelf: 'flex-start',
+    paddingLeft: 10,
+  }
 });
 
 export default ProfileScreen;
