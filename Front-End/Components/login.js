@@ -69,6 +69,7 @@ const LoginScreen = () => {
 
       await AsyncStorage.setItem('userToken', token); // ✅ Save token for later use
       await AsyncStorage.setItem('emergencyContact', emergencyContact || '');
+      await AsyncStorage.setItem('userId', response.data.user_id.toString()); 
 
       Alert.alert('Login Successful');
 

@@ -20,7 +20,7 @@ const BottomComponent = ({ navigation, disableButton }) => {
                     colors={gradientColors}
                     style={styles.gradientBackground}
                 >
-                    <Icon name={iconName} size={30} color="white" />
+                    <Icon name={iconName} size={35} color="white" />
                 </LinearGradient>
             </TouchableOpacity>
         );
@@ -28,10 +28,10 @@ const BottomComponent = ({ navigation, disableButton }) => {
 
     return (
         <View style={styles.container}>
-            {renderButton('home', ['#007bff', '#0056b3'], 'Home', 'home')}
-            {renderButton('warning', ['#dc3545', '#b21f2d'], 'Emergency', 'emergency')}
-            {renderButton('settings', ['#28a745', '#218838'], 'Settings', 'settings')}
-            {renderButton('account-circle', ['#ffc107', '#ff8f00'], 'Profile', 'profile')}
+            {renderButton('home', ['#4A90E2', '#6B8DFF'], 'Home', 'home')} {/* Softer blue tones */}
+            {renderButton('warning', ['#FF7043', '#FF5722'], 'Emergency', 'emergency')} {/* Warm red tones */}
+            {renderButton('settings', ['#66BB6A', '#43A047'], 'Settings', 'settings')} {/* Calming green tones */}
+            {renderButton('account-circle', ['#FFD54F', '#FFB300'], 'Profile', 'profile')} {/* Soft yellow tones */}
         </View>
     );
 };
@@ -42,15 +42,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         width: '100%',
-        paddingVertical: 12, 
-        backgroundColor: '#ffffff',
+        paddingVertical: 20, 
         borderTopWidth: 1,
         borderTopColor: '#ddd',
     },
     gradientButton: {
-        width: 50, // Adjusted width
-        height: 50, // Adjusted height
-        borderRadius: 32.5, 
+        width: 70, // Increased size for easier tapping
+        height: 70, // Increased size for easier tapping
+        borderRadius: 35, // Making the button circular
         overflow: 'hidden',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
@@ -62,8 +61,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 32.5, 
-        padding: 5, 
+        borderRadius: 35, // Ensures circular shape
+        padding: 10, // Adding padding for the icons
     },
 });
 

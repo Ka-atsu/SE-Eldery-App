@@ -17,7 +17,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'emergency_contact' => 'required|string|max:15'
+            'emergency_contact' => 'required|string|max:15'  // Allow full phone number format
         ]);
 
         if ($validator->fails()) {
@@ -51,7 +51,42 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login successful',
-            'token' => $user->createToken('auth_token')->plainTextToken
+            'token' => $user->createToken('auth_token')->plainTextToken,
+            'user_id' => $user->id
         ]);
     }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'emergency_contact' => 'nullable|string|max:15',  // Optional emergency contact
+        ]);
+    
+        // Check for validation errors
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    
+        // Find the user by ID
+        $user = User::find($id);
+    
+        // If the user is not found, return a 'User not found' error
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    
+        // Update the user's profile
+        $user->name = $request->name;
+        if ($request->has('emergency_contact')) {
+            $user->emergency_contact = $request->emergency_contact;
+        }
+    
+        // Save the updated user data
+        $user->save();
+    
+        // Return a success message
+        return response()->json(['message' => 'Profile updated successfully!'], 200);
+    }    
 }

@@ -10,10 +10,11 @@ const API_URL = "http://192.168.18.81:8000/api"; // Replace with your Laravel AP
 const ProfileScreen = ({ navigation }) => {
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("johndoe@example.com");
-  const [profilePic, setProfilePic] = useState("https://randomuser.me/api/portraits/men/1.jpg");
+  const [profilePic, setProfilePic] = useState(null);  // Null initially to show placeholder
   const [emergencyContact, setEmergencyContact] = useState("No emergency contact set");
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null); // Store user ID
 
   useEffect(() => {
     getUserDetails();
@@ -30,14 +31,17 @@ const ProfileScreen = ({ navigation }) => {
         return;
       }
 
+      // Make API call to fetch user details using the token
       const response = await axios.get(`${API_URL}/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const userData = response.data;
+      setUserId(userData.id); // Set the user ID
       setName(userData.name);
       setEmail(userData.email);
       setEmergencyContact(userData.emergency_contact || "No emergency contact set");
+      setProfilePic(userData.profile_pic || null); // Set the profile picture if available
     } catch (error) {
       console.log("Error fetching user details:", error);
       Alert.alert("Error", "Failed to load user data.");
@@ -50,19 +54,25 @@ const ProfileScreen = ({ navigation }) => {
     try {
       const token = await AsyncStorage.getItem("userToken");
 
-      await axios.put(
-        `${API_URL}/user/update`,
-        { name, emergency_contact: emergencyContact }, 
+      // Send updated name and emergency contact (no formatting needed) to the backend API
+      const response = await axios.put(
+        `${API_URL}/user/update/${userId}`, // Use the user ID in the URL for updating the correct user
+        {
+          name,
+          emergency_contact: emergencyContact // Send the phone number as is (no formatting)
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      Alert.alert("Success", "Profile updated successfully!");
-      setIsEditing(false);
+  
+      if (response.status === 200) {
+        Alert.alert("Success", "Profile updated successfully!");
+        setIsEditing(false); // Disable editing after saving
+      }
     } catch (error) {
       console.log("Update Error:", error);
       Alert.alert("Error", "Failed to update profile.");
     }
-  };
+  };  
 
   const handleEditProfilePic = async () => {
     try {
@@ -93,7 +103,13 @@ const ProfileScreen = ({ navigation }) => {
         <>
           {/* Profile Picture */}
           <View style={styles.profilePicContainer}>
-            <Image source={{ uri: profilePic }} style={styles.profilePic} />
+            {profilePic ? (
+              <Image source={{ uri: profilePic }} style={styles.profilePic} />
+            ) : (
+              <View style={styles.profilePicPlaceholder}>
+                <Icon name="person" size={50} color="#fff" />
+              </View>
+            )}
             <TouchableOpacity style={styles.editButton} onPress={handleEditProfilePic}>
               <Icon name="edit" size={20} color="#fff" />
             </TouchableOpacity>
@@ -168,6 +184,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderWidth: 3,
     borderColor: '#007bff',
+  },
+  profilePicPlaceholder: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#ccc', // Gray background for placeholder
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   editButton: {
     position: 'absolute',
