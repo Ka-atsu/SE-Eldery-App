@@ -26,25 +26,7 @@ const GetStartedScreen = ({ navigation }) => {
 
       <Text style={styles.stepTitle}>Step 3: Customize Your Profile</Text>
       <Text style={styles.stepDescription}>
-        Add a profile picture, update your name, and make sure your contact information is up-to-date. This helps emergency responders and your contacts find you quickly.
-      </Text>
-
-      {/* Step 4: Adding Emergency Contacts */}
-      <Text style={styles.stepTitle}>Step 4: Add Emergency Contacts</Text>
-      <Text style={styles.stepDescription}>
-        In case of an emergency, you can add important contacts such as family members, friends, and doctors. Ensure their phone numbers and hospital contact information are up to date.
-      </Text>
-
-      {/* Step 5: Set Up Account Settings */}
-      <Text style={styles.stepTitle}>Step 5: Account Settings</Text>
-      <Text style={styles.stepDescription}>
-        You can manage your contacts and emergency numbers in the account settings. Make sure to add all necessary contacts.
-      </Text>
-
-      {/* Step 6: Summary of Features */}
-      <Text style={styles.stepTitle}>Summary</Text>
-      <Text style={styles.stepDescription}>
-        SeniorReach helps you manage your emergency contacts and quickly send emergency alerts.Once you have set up your profile and contacts, you're all set to start using the app!
+        Add a profile picture, update your name, and make sure your contact information is up-to-date.
       </Text>
 
       {/* Get Started Button */}

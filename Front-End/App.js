@@ -8,7 +8,13 @@ import LoginScreen from './Components/login';
 import ProfileScreen from './Components/ProfileScreen';
 import GetStartedScreen from './Components/GetStartedScreen';
 import HelpScreen from './Components/HelpScreen';
+import { LogBox } from 'react-native'; // Import LogBox
 const Stack = createNativeStackNavigator();
+
+// Ignore specific warning
+LogBox.ignoreLogs([
+  'Warning: Text strings must be rendered within a <Text> component'
+]);
 
 const App = () => {
   return (

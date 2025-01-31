@@ -90,6 +90,21 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      // Remove the token and user-related data from AsyncStorage
+      await AsyncStorage.removeItem('userToken');
+      await AsyncStorage.removeItem('emergencyContact');
+      await AsyncStorage.removeItem('userId');
+  
+      // Redirect to the Login screen after logging out
+      navigation.navigate('Login');
+    } catch (error) {
+      console.log('Error clearing AsyncStorage:', error);
+      Alert.alert('Error', 'An error occurred while logging out.');
+    }
+  };  
+
   return (
     <View style={styles.container}>
       {/* Back Button */}
@@ -117,7 +132,7 @@ const ProfileScreen = ({ navigation }) => {
 
           {/* Profile Information */}
           <Text style={styles.label}>Email</Text>
-          <Text style={styles.inputTextNonEditable}>{email}</Text> {/* ✅ Email is now non-editable */}
+          <Text style={styles.inputTextNonEditable}>{email}</Text> {/* Email is now non-editable */}
 
           <Text style={styles.label}>Name</Text>
           {isEditing ? (
@@ -148,10 +163,9 @@ const ProfileScreen = ({ navigation }) => {
               <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
           )}
-
-          <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate("Login")}>
-            <Text style={styles.logoutButtonText}>Log out</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+              <Text style={styles.logoutButtonText}>Log out</Text>
+            </TouchableOpacity>
         </>
       )}
     </View>
@@ -189,7 +203,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#ccc', // Gray background for placeholder
+    backgroundColor: '#ccc',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,

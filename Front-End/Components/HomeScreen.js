@@ -13,12 +13,13 @@ const HomeScreen = ({ navigation }) => {
   const [name, setName] = useState(''); // Store the user's name
   const [emergencyContact, setEmergencyContact] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   // Play the emergency alert sound
   const playSound = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(
-        require('../assets/notifalert.mp3')
+        require('../assets/Notify.mp3')
       );
       await sound.playAsync();
     } catch (error) {
@@ -53,58 +54,53 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  // Handle button press for sending emergency SMS
   const handlePress = async (type) => {
     if (type === 'notify') {
+      if (isButtonDisabled) return; // Prevent multiple clicks
+      setIsButtonDisabled(true); // Disable button
+  
       console.log('Notify Others Pressed');
       playSound();
-
+  
       if (!emergencyContact || emergencyContact === 'No emergency contact set') {
         Alert.alert('Error', 'No emergency contact found.');
+        setIsButtonDisabled(false); // Re-enable button if no contact is found
         return;
       }
-
-      // Clean and format the emergency contact number
-      let formattedEmergencyContact = emergencyContact.trim();  // Remove extra spaces
-
-      // If the number starts with '0', prepend '+63' and remove the '0'
+  
+      let formattedEmergencyContact = emergencyContact.trim();
+  
       if (formattedEmergencyContact.startsWith('0') && formattedEmergencyContact.length === 11) {
-        formattedEmergencyContact = '+63' + formattedEmergencyContact.slice(1);  // Replace leading '0' with '+63'
+        formattedEmergencyContact = '+63' + formattedEmergencyContact.slice(1);
       } else if (!formattedEmergencyContact.startsWith('+63') && formattedEmergencyContact.length === 10) {
         formattedEmergencyContact = '+63' + formattedEmergencyContact;
       }
-
-      console.log('Formatted Emergency Contact:', formattedEmergencyContact);
-
-      // Insert spaces for formatting the number
+  
       formattedEmergencyContact = formattedEmergencyContact.replace(/^(\+63)(\d{3})(\d{3})(\d{4})$/, '$1 $2 $3 $4');
-
-      console.log('Formatted Emergency Contact with Spaces:', formattedEmergencyContact);
-
-      // Validate the format before sending it
+  
+      console.log('Formatted Emergency Contact:', formattedEmergencyContact);
+  
       const phoneRegex = /^\+63 \d{3} \d{3} \d{4}$/;
       if (!phoneRegex.test(formattedEmergencyContact)) {
         Alert.alert('Error', 'Invalid phone number format. Ensure it starts with +63 and is followed by 10 digits with spaces.');
+        setIsButtonDisabled(false); // Re-enable button on error
         return;
       }
-
-      // Define the message to be sent, now including the user's name
-      const message = `This is an emergency message from ${name}. Please take action immediately.`;
-
-      // Prepare the data to send
+  
+      const message = `This is a notify message from ${name}. Please take action immediately.`;
+  
       const dataToSend = {
         emergency_contact: formattedEmergencyContact,
         message: message,
       };
-
-      // Send SMS to the emergency contact using your backend
+  
       try {
         const response = await axios.post(`${API_URL}/send-sms`, dataToSend, {
           headers: {
-            'Content-Type': 'application/json',  // Explicitly setting Content-Type as JSON
+            'Content-Type': 'application/json',
           },
         });
-
+  
         if (response.data.status === 'success') {
           Alert.alert('Success', 'SMS sent successfully');
         } else {
@@ -113,6 +109,10 @@ const HomeScreen = ({ navigation }) => {
       } catch (error) {
         console.error(error);
         Alert.alert('Error', 'An error occurred while sending SMS.');
+      } finally {
+        setTimeout(() => {
+          setIsButtonDisabled(false); // Re-enable button after delay
+        }, 30000); // Disable for 30 seconds
       }
     }
   };
@@ -131,14 +131,15 @@ const HomeScreen = ({ navigation }) => {
       ) : (
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.circleButton}
+            style={[styles.circleButton, isButtonDisabled && { backgroundColor: '#A9A9A9' }]} // Gray out when disabled
             onPress={() => handlePress('notify')}
+            disabled={isButtonDisabled} // Disable interaction
             accessibilityLabel="Notify Button"
             accessibilityRole="button"
           >
             <View style={styles.innerShadow}>
               <Icon name="notifications" color="white" size={60} />
-              <Text style={styles.buttonTitle}>Notify Others</Text>
+              <Text style={styles.buttonTitle}>{isButtonDisabled ? 'Processing...' : 'Notify Others'}</Text>
             </View>
           </TouchableOpacity>
         </View>

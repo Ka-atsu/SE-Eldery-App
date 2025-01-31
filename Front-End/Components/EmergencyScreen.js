@@ -10,14 +10,16 @@ const { width } = Dimensions.get('window');
 const API_URL = 'http://192.168.18.81:8000/api';
 
 const EmergencyScreen = ({ navigation }) => {
+  const [name, setName] = useState(''); // Store the user's name
   const [emergencyContact, setEmergencyContact] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // New state to track button disable status
 
   // Play the emergency alert sound
   const playSound = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(
-        require('../assets/notifalert.mp3')
+        require('../assets/Emergency.mp3')
       );
       await sound.playAsync();
     } catch (error) {
@@ -42,6 +44,7 @@ const EmergencyScreen = ({ navigation }) => {
       });
 
       const userData = response.data;
+      setName(userData.name);  // Set the user's name
       setEmergencyContact(userData.emergency_contact || 'No emergency contact set');
     } catch (error) {
       console.log('Error fetching user details:', error);
@@ -53,11 +56,15 @@ const EmergencyScreen = ({ navigation }) => {
 
   // Handle button press for sending emergency SMS
   const handleEmergencyPress = async () => {
+    if (isButtonDisabled) return; // Prevent multiple clicks
+    setIsButtonDisabled(true); // Disable button
+
     console.log('Emergency Pressed');
     playSound();
 
     if (!emergencyContact || emergencyContact === 'No emergency contact set') {
       Alert.alert('Error', 'No emergency contact found.');
+      setIsButtonDisabled(false); // Re-enable button if no contact is found
       return;
     }
 
@@ -74,10 +81,11 @@ const EmergencyScreen = ({ navigation }) => {
     const phoneRegex = /^\+63 \d{3} \d{3} \d{4}$/;
     if (!phoneRegex.test(formattedEmergencyContact)) {
       Alert.alert('Error', 'Invalid phone number format. Ensure it starts with +63 and is followed by 10 digits with spaces.');
+      setIsButtonDisabled(false); // Re-enable button on error
       return;
     }
 
-    const message = 'This is an emergency message from the app. Please take action immediately.';
+    const message = `This is an emergency message from ${name}. Please take action immediately.`;
     const dataToSend = {
       emergency_contact: formattedEmergencyContact,
       message: message,
@@ -98,6 +106,10 @@ const EmergencyScreen = ({ navigation }) => {
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'An error occurred while sending SMS. Please check your network or authentication.');
+    } finally {
+      setTimeout(() => {
+        setIsButtonDisabled(false); // Re-enable button after delay
+      }, 12000); // Disable for 13 seconds
     }
   };
 
@@ -118,15 +130,16 @@ const EmergencyScreen = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           {/* Emergency Button with Inner Shadow Effect */}
           <TouchableOpacity
-            style={styles.circleButton}
+            style={[styles.circleButton, isButtonDisabled && { backgroundColor: '#A9A9A9' }]} // Gray out when disabled
             onPress={handleEmergencyPress}
+            disabled={isButtonDisabled} // Disable interaction
             accessibilityLabel="Emergency Button"
             accessibilityRole="button"
           >
             {/* Inner Shadow Effect inside the Button */}
             <View style={styles.innerShadow}>
               <Icon name="warning" color="white" size={60} />
-              <Text style={styles.buttonTitle}>Emergency</Text>
+              <Text style={styles.buttonTitle}>{isButtonDisabled ? 'Processing...' : 'Emergency'}</Text>
             </View>
           </TouchableOpacity>
         </View>
