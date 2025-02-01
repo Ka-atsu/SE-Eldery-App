@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 const GetStartedScreen = ({ navigation }) => {
   return (
@@ -24,16 +24,18 @@ const GetStartedScreen = ({ navigation }) => {
       <Text style={styles.feature}>• <Text style={styles.bold}>Notify Others</Text>: With just a click, you can send a message to your emergency contacts, letting them know you need help.</Text>
       <Text style={styles.feature}>• <Text style={styles.bold}>Emergency Button</Text>: A quick emergency button that alerts your contacts.</Text>
 
-      <Text style={styles.stepTitle}>Step 3: Customize Your Profile</Text>
+      <Text style={styles.stepTitle}>Step 3: Customize Your Profile (optional)</Text>
       <Text style={styles.stepDescription}>
         Add a profile picture, update your name, and make sure your contact information is up-to-date.
       </Text>
 
       {/* Get Started Button */}
-      <Button
-        title="Let's Get Started!"
-        onPress={() => navigation.navigate('Login')} 
-      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Login')}
+      >
+        <Text style={styles.buttonText}>Let's Get Started!</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -41,36 +43,54 @@ const GetStartedScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 20,
-    backgroundColor: '#f0f0f0',
+    padding: 30,
+    backgroundColor: '#ffffff',
   },
   header: {
-    fontSize: 25,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 15,
     textAlign: 'center',
-    marginTop: 10,
+    color: '#4b6a9b',
   },
   description: {
     fontSize: 18,
-    marginBottom: 20,
+    marginBottom: 25,
     textAlign: 'center',
+    color: '#555',
   },
   stepTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 20,
+    marginTop: 25,
+    color: '#333',
   },
   stepDescription: {
-    fontSize: 16,
-    marginBottom: 20,
+    fontSize: 18,
+    marginBottom: 15,
+    color: '#666',
   },
   feature: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 10,
+    color: '#333',
   },
   bold: {
     fontWeight: 'bold',
+  },
+  button: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+    marginTop: 40,
+    alignItems: 'center',
+    elevation: 5, // Shadow effect
+  },
+  buttonText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
 

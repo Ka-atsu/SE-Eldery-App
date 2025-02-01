@@ -5,6 +5,7 @@ import { Audio } from 'expo-av';
 import { Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomComponent from './Bottom';
+import { useFocusEffect } from '@react-navigation/native'; // Importing useFocusEffect
 
 const { width } = Dimensions.get('window');
 const API_URL = 'http://192.168.18.81:8000/api';
@@ -13,7 +14,8 @@ const EmergencyScreen = ({ navigation }) => {
   const [name, setName] = useState(''); // Store the user's name
   const [emergencyContact, setEmergencyContact] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // New state to track button disable status
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Track button disable status
+  const [isBottomComponentTemporarilyDisabled, setIsBottomComponentTemporarilyDisabled] = useState(false);
 
   // Play the emergency alert sound
   const playSound = async () => {
@@ -27,25 +29,36 @@ const EmergencyScreen = ({ navigation }) => {
     }
   };
 
-  // Get user details including emergency contact
+  // Fetch user details when the screen is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserDetails();
+    }, [])
+  );
+
+  // Function to fetch user details
   const getUserDetails = async () => {
     try {
       setLoading(true);
       const token = await AsyncStorage.getItem('userToken');
-      
+  
       if (!token) {
         Alert.alert('Error', 'User not authenticated. Please log in.');
         navigation.navigate('Login');
         return;
       }
-
+  
       const response = await axios.get(`${API_URL}/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       const userData = response.data;
       setName(userData.name);  // Set the user's name
       setEmergencyContact(userData.emergency_contact || 'No emergency contact set');
+  
+      // Debugging the values:
+      console.log('Name:', userData.name);
+      console.log('Emergency Contact:', userData.emergency_contact || 'No emergency contact set');
     } catch (error) {
       console.log('Error fetching user details:', error);
       Alert.alert('Error', 'Failed to load user data.');
@@ -58,6 +71,7 @@ const EmergencyScreen = ({ navigation }) => {
   const handleEmergencyPress = async () => {
     if (isButtonDisabled) return; // Prevent multiple clicks
     setIsButtonDisabled(true); // Disable button
+    setIsBottomComponentTemporarilyDisabled(true); // Temporarily disable bottom component
 
     console.log('Emergency Pressed');
     playSound();
@@ -65,6 +79,7 @@ const EmergencyScreen = ({ navigation }) => {
     if (!emergencyContact || emergencyContact === 'No emergency contact set') {
       Alert.alert('Error', 'No emergency contact found.');
       setIsButtonDisabled(false); // Re-enable button if no contact is found
+      setIsBottomComponentTemporarilyDisabled(false); // Re-enable bottom component
       return;
     }
 
@@ -82,6 +97,7 @@ const EmergencyScreen = ({ navigation }) => {
     if (!phoneRegex.test(formattedEmergencyContact)) {
       Alert.alert('Error', 'Invalid phone number format. Ensure it starts with +63 and is followed by 10 digits with spaces.');
       setIsButtonDisabled(false); // Re-enable button on error
+      setIsBottomComponentTemporarilyDisabled(false); // Re-enable bottom component
       return;
     }
 
@@ -109,13 +125,10 @@ const EmergencyScreen = ({ navigation }) => {
     } finally {
       setTimeout(() => {
         setIsButtonDisabled(false); // Re-enable button after delay
-      }, 12000); // Disable for 13 seconds
+        setIsBottomComponentTemporarilyDisabled(false); // Re-enable bottom component
+      }, 12000); // Disable for 12 seconds
     }
   };
-
-  useEffect(() => {
-    getUserDetails();
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -139,13 +152,19 @@ const EmergencyScreen = ({ navigation }) => {
             {/* Inner Shadow Effect inside the Button */}
             <View style={styles.innerShadow}>
               <Icon name="warning" color="white" size={60} />
-              <Text style={styles.buttonTitle}>{isButtonDisabled ? 'Processing...' : 'Emergency'}</Text>
+              <Text style={styles.buttonTitle}>
+                {isButtonDisabled ? 'Processing...' : 'Emergency'}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
       )}
 
-      <BottomComponent navigation={navigation} disableButton={'Emergency'} />
+      <BottomComponent 
+        navigation={navigation} 
+        disableButton={'Emergency'} 
+        isBottomComponentTemporarilyDisabled={true} // Passing the new state
+      />
     </View>
   );
 };
@@ -155,7 +174,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5', // Light background for readability
+    backgroundColor: '#F5F5F5',
     marginTop: 20,
     paddingHorizontal: 15,
   },
@@ -163,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     textAlign: 'center',
-    fontSize: 28, // Slightly smaller for easier reading
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
   },
@@ -171,7 +190,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     color: '#555',
-    marginBottom: 30, // Extra spacing for better readability
+    marginBottom: 30,
   },
   buttonContainer: {
     flex: 1,
@@ -185,26 +204,26 @@ const styles = StyleSheet.create({
     borderRadius: (width * 0.8) / 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FF6347', // Soft emergency red
-    elevation: 8, // Outer shadow with a more moderate depth
-    shadowColor: '#8B0000', // Darker red shadow for outer depth
+    backgroundColor: '#FF4C4C', // Emergency Red
+    elevation: 8,
+    shadowColor: '#B83A3A',
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.4,
     shadowRadius: 10,
     borderWidth: 2,
-    borderColor: '#FF4500', // Slightly lighter red for a glossy look
+    borderColor: '#FF1C1C', // Slightly darker red border
   },
   innerShadow: {
     width: '90%',
     height: '90%',
     borderRadius: (width * 0.8) / 2,
-    backgroundColor: '#FF7F50', // A lighter red shade for inner depth
+    backgroundColor: '#FF6347', // Lighter red for the inner shadow
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#D84315', // Inner shadow effect (slightly darker red)
-    shadowOffset: { width: 0, height: -3 },
+    shadowColor: '#D85A5A',
+    shadowOffset: { width: 0, height: -5 },
     shadowOpacity: 0.3,
-    shadowRadius: 6,
+    shadowRadius: 8,
   },
   buttonTitle: {
     fontSize: 24,
@@ -212,5 +231,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
 
 export default EmergencyScreen;

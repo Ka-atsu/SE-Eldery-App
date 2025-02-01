@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Audio } from 'expo-av';
 import { Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';  // Import useFocusEffect hook
 import BottomComponent from './Bottom';
 
 const { width } = Dimensions.get('window');
@@ -14,6 +15,7 @@ const HomeScreen = ({ navigation }) => {
   const [emergencyContact, setEmergencyContact] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isBottomComponentTemporarilyDisabled, setIsBottomComponentTemporarilyDisabled] = useState(false);
 
   // Play the emergency alert sound
   const playSound = async () => {
@@ -27,24 +29,30 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  // Get user details including emergency contact
+  // Using useFocusEffect to reload user details when the screen is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserDetails();
+    }, [])
+  );
+
   const getUserDetails = async () => {
     try {
       setLoading(true);
       const token = await AsyncStorage.getItem('userToken');
-      
+  
       if (!token) {
         Alert.alert('Error', 'User not authenticated. Please log in.');
         navigation.navigate('Login');
         return;
       }
-
+  
       const response = await axios.get(`${API_URL}/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       const userData = response.data;
-      setName(userData.name);  // Set the user's name
+      setName(userData.name); // Set the user's name
       setEmergencyContact(userData.emergency_contact || 'No emergency contact set');
     } catch (error) {
       console.log('Error fetching user details:', error);
@@ -56,51 +64,51 @@ const HomeScreen = ({ navigation }) => {
 
   const handlePress = async (type) => {
     if (type === 'notify') {
-      if (isButtonDisabled) return; // Prevent multiple clicks
+      if (isButtonDisabled || isBottomComponentTemporarilyDisabled) return; // Prevent multiple clicks
       setIsButtonDisabled(true); // Disable button
-  
-      console.log('Notify Others Pressed');
+      setIsBottomComponentTemporarilyDisabled(true);
+
       playSound();
-  
+
       if (!emergencyContact || emergencyContact === 'No emergency contact set') {
         Alert.alert('Error', 'No emergency contact found.');
         setIsButtonDisabled(false); // Re-enable button if no contact is found
+        setIsBottomComponentTemporarilyDisabled(false);
         return;
       }
-  
+
       let formattedEmergencyContact = emergencyContact.trim();
-  
+
       if (formattedEmergencyContact.startsWith('0') && formattedEmergencyContact.length === 11) {
         formattedEmergencyContact = '+63' + formattedEmergencyContact.slice(1);
       } else if (!formattedEmergencyContact.startsWith('+63') && formattedEmergencyContact.length === 10) {
         formattedEmergencyContact = '+63' + formattedEmergencyContact;
       }
-  
+
       formattedEmergencyContact = formattedEmergencyContact.replace(/^(\+63)(\d{3})(\d{3})(\d{4})$/, '$1 $2 $3 $4');
-  
-      console.log('Formatted Emergency Contact:', formattedEmergencyContact);
-  
+
       const phoneRegex = /^\+63 \d{3} \d{3} \d{4}$/;
       if (!phoneRegex.test(formattedEmergencyContact)) {
         Alert.alert('Error', 'Invalid phone number format. Ensure it starts with +63 and is followed by 10 digits with spaces.');
         setIsButtonDisabled(false); // Re-enable button on error
+        setIsBottomComponentTemporarilyDisabled(false);
         return;
       }
-  
+
       const message = `This is a notify message from ${name}. Please take action immediately.`;
-  
+
       const dataToSend = {
         emergency_contact: formattedEmergencyContact,
         message: message,
       };
-  
+
       try {
         const response = await axios.post(`${API_URL}/send-sms`, dataToSend, {
           headers: {
             'Content-Type': 'application/json',
           },
         });
-  
+
         if (response.data.status === 'success') {
           Alert.alert('Success', 'SMS sent successfully');
         } else {
@@ -112,14 +120,11 @@ const HomeScreen = ({ navigation }) => {
       } finally {
         setTimeout(() => {
           setIsButtonDisabled(false); // Re-enable button after delay
+          setIsBottomComponentTemporarilyDisabled(false);
         }, 30000); // Disable for 30 seconds
       }
     }
   };
-
-  useEffect(() => {
-    getUserDetails();
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -131,21 +136,30 @@ const HomeScreen = ({ navigation }) => {
       ) : (
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={[styles.circleButton, isButtonDisabled && { backgroundColor: '#A9A9A9' }]} // Gray out when disabled
+            style={[
+              styles.circleButton,
+              (isButtonDisabled || isBottomComponentTemporarilyDisabled) && { backgroundColor: '#A9A9A9' }
+            ]}
             onPress={() => handlePress('notify')}
-            disabled={isButtonDisabled} // Disable interaction
+            disabled={isButtonDisabled || isBottomComponentTemporarilyDisabled}
             accessibilityLabel="Notify Button"
             accessibilityRole="button"
           >
             <View style={styles.innerShadow}>
               <Icon name="notifications" color="white" size={60} />
-              <Text style={styles.buttonTitle}>{isButtonDisabled ? 'Processing...' : 'Notify Others'}</Text>
+              <Text style={styles.buttonTitle}>
+                {(isButtonDisabled || isBottomComponentTemporarilyDisabled) ? 'Processing...' : 'Notify Others'}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
       )}
 
-      <BottomComponent navigation={navigation} disableButton={'Home'} />
+      <BottomComponent
+        navigation={navigation}
+        disableButton={'Home'} // Ensure this is a string
+        isBottomComponentTemporarilyDisabled={isBottomComponentTemporarilyDisabled} // Ensure this is a boolean
+      />
     </View>
   );
 };

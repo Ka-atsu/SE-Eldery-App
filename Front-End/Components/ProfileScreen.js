@@ -19,36 +19,40 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     getUserDetails();
   }, []);
-
+  
   const getUserDetails = async () => {
     try {
       setLoading(true);
       const token = await AsyncStorage.getItem("userToken");
-
+  
       if (!token) {
         Alert.alert("Error", "User not authenticated. Please log in.");
         navigation.navigate("Login");
         return;
       }
-
-      // Make API call to fetch user details using the token
+  
       const response = await axios.get(`${API_URL}/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       const userData = response.data;
       setUserId(userData.id); // Set the user ID
       setName(userData.name);
       setEmail(userData.email);
       setEmergencyContact(userData.emergency_contact || "No emergency contact set");
       setProfilePic(userData.profile_pic || null); // Set the profile picture if available
+  
+      // Debugging values:
+      console.log("Name:", userData.name);
+      console.log("Email:", userData.email);
+      console.log("Emergency Contact:", userData.emergency_contact || "No emergency contact set");
     } catch (error) {
       console.log("Error fetching user details:", error);
       Alert.alert("Error", "Failed to load user data.");
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   const handleSave = async () => {
     try {
@@ -132,7 +136,7 @@ const ProfileScreen = ({ navigation }) => {
 
           {/* Profile Information */}
           <Text style={styles.label}>Email</Text>
-          <Text style={styles.inputTextNonEditable}>{email}</Text> {/* Email is now non-editable */}
+          <Text style={styles.inputTextNonEditable}>{email || 'No email provided'}</Text>
 
           <Text style={styles.label}>Name</Text>
           {isEditing ? (
