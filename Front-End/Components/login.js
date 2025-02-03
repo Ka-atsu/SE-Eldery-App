@@ -5,8 +5,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons'; // For password visibility toggle
 import { Button } from 'react-native-elements'; // Use Button from react-native-elements for better styling
-
-const API_URL = 'http://192.168.18.81:8000/api'; 
+import { API_URL } from '../config';
 
 const LoginScreen = () => {
   const navigation = useNavigation();

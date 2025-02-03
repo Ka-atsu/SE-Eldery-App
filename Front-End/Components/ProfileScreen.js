@@ -4,8 +4,7 @@ import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const API_URL = "http://192.168.18.81:8000/api"; // Replace with your Laravel API IP
+import { API_URL } from '../config';
 
 const ProfileScreen = ({ navigation }) => {
   const [name, setName] = useState("John Doe");

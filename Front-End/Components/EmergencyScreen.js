@@ -6,9 +6,9 @@ import { Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomComponent from './Bottom';
 import { useFocusEffect } from '@react-navigation/native'; // Importing useFocusEffect
-
+import { API_URL } from '../config';
 const { width } = Dimensions.get('window');
-const API_URL = 'http://192.168.18.81:8000/api';
+
 
 const EmergencyScreen = ({ navigation }) => {
   const [name, setName] = useState('');
