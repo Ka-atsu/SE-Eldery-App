@@ -21,7 +21,7 @@ const EmergencyScreen = ({ navigation }) => {
   const playSound = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(
-        require('../assets/Emergency.mp3')
+        require('../assets/EmergencySound.mp3')
       );
       await sound.playAsync();
     } catch (error) {
@@ -124,7 +124,7 @@ const EmergencyScreen = ({ navigation }) => {
       setTimeout(() => {
         setIsButtonDisabled(false); // Re-enable button after delay
         setIsBottomComponentTemporarilyDisabled(false); // Re-enable bottom component
-      }, 12000); // Disable for 12 seconds
+      }, 19000); // Disable for 19 seconds
     }
   };
 
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F4F8',
   },
   header: {
-    marginTop: 30,
+    marginTop: 40,
     marginBottom: 15,
     textAlign: 'center',
     fontSize: 32,

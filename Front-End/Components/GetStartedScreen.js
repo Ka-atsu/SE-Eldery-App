@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
     color: '#2C3E50',  // Darker blue for high contrast
+    marginTop:20,
   },
   description: {
     fontSize: 20,  // Larger font size

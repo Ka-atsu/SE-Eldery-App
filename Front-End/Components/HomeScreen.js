@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F4F8', // Soft light background color for a modern feel
   },
   header: {
-    marginTop: 30,
+    marginTop: 40,
     marginBottom: 10,
     textAlign: 'center',
     fontSize: 30,
