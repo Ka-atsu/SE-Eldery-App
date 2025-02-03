@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 const SettingsScreen = ({ navigation }) => {
-  const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
-
-  const toggleNotification = () => setIsNotificationEnabled((prev) => !prev);
-
   return (
     <View style={styles.container}>
       {/* Back Button */}
@@ -15,17 +11,6 @@ const SettingsScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       <Text style={styles.title}>Settings</Text>
-
-      {/* Notifications Setting */}
-      <View style={styles.settingItem}>
-        <Text style={styles.settingText}>Enable Notifications</Text>
-        <Switch
-          value={isNotificationEnabled}
-          onValueChange={toggleNotification}
-          thumbColor={isNotificationEnabled ? '#28a745' : '#ccc'}
-          trackColor={{ false: '#ddd', true: '#28a745' }}
-        />
-      </View>
 
       {/* Privacy Policy */}
       <TouchableOpacity style={styles.settingItem} onPress={() => alert('Privacy Policy')}>
@@ -59,22 +44,24 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,  // Slightly larger title for better readability
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 30,
     textAlign: 'center',
     marginTop: 60, 
+    color: '#2C3E50',  // Darker color for better contrast
   },
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    padding: 20,  // Increased padding for better touch targets
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   settingText: {
-    fontSize: 18,
+    fontSize: 22,  // Larger text for readability
+    color: '#333',  // Darker text color for better contrast
   },
 });
 

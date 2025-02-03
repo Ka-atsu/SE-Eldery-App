@@ -7,7 +7,7 @@ const HelpScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={30} color="#007bff" />
+        <Icon name="arrow-back" size={35} color="#007bff" />
       </TouchableOpacity>
 
       <Text style={styles.title}>Help</Text>
@@ -26,7 +26,7 @@ const HelpScreen = ({ navigation }) => {
       </Text>
 
       <Text style={styles.content}>
-        <Text style={styles.bold}>3. Edit Profile: </Text>You can edit your profile, including your name and emergency contact, from the "Profile" screen. Simply tap the yellow button on the home screen to access your profile.
+        <Text style={styles.bold}>3. Edit Profile: </Text>You can edit your profile, including your name and emergency contact, from the "Profile" screen. Simply tap (the yellow button) on the home screen or emergency screen to access your profile.
       </Text>
 
       <Text style={styles.content}>
@@ -39,8 +39,8 @@ const HelpScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    padding: 30,
-    backgroundColor: '#f8f9fa',
+    padding: 40, // Increased padding for a more open layout
+    backgroundColor: '#ffffff',
     paddingBottom: 50,  
   },
   backButton: {
@@ -51,24 +51,24 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   title: {
-    fontSize: 36,
+    fontSize: 38, // Larger title for better visibility
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 25,
     textAlign: 'center',
     marginTop: 60,
-    color: '#0056b3',
+    color: '#0056b3',  // Contrasting color for clarity
   },
   subTitle: {
-    fontSize: 28,
+    fontSize: 30, // Slightly larger subtitle
     fontWeight: 'bold',
     marginTop: 30,
     textAlign: 'left',
     color: '#333',
   },
   content: {
-    fontSize: 22,
-    lineHeight: 32,
-    marginBottom: 20,
+    fontSize: 24, // Larger font size for better readability
+    lineHeight: 36, // Increase line height for better text clarity
+    marginBottom: 30, // Increased margin for better spacing
     textAlign: 'left',
     color: '#333',
   },

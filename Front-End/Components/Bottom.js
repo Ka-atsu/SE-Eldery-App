@@ -22,7 +22,7 @@ const BottomComponent = ({ navigation, disableButton, isBottomComponentTemporari
         key={key}
         style={[
           styles.gradientButton,
-          isButtonDisabled && { backgroundColor: '#A9A9A9' }, // Graying out the button if disabled
+          isButtonDisabled && styles.disabledButton, // Apply disabled styles
         ]}
         onPress={() => !isButtonDisabled && navigation.navigate(navigateTo)} // Prevent navigation if button is disabled
         activeOpacity={0.8}
@@ -37,10 +37,10 @@ const BottomComponent = ({ navigation, disableButton, isBottomComponentTemporari
 
   return (
     <View style={styles.container}>
-      {renderButton('home', ['#4A90E2', '#6B8DFF'], 'Home', 'home')} {/* Softer blue tones */}
-      {renderButton('warning', ['#FF7043', '#FF5722'], 'Emergency', 'emergency')} {/* Warm red tones */}
-      {renderButton('settings', ['#66BB6A', '#43A047'], 'Settings', 'settings')} {/* Calming green tones */}
-      {renderButton('account-circle', ['#FFD54F', '#FFB300'], 'Profile', 'profile')} {/* Soft yellow tones */}
+      {renderButton('home', ['#6A74FF', '#3D59F9'], 'Home', 'home')} {/* Modern blue tones */}
+      {renderButton('warning', ['#FF7F50', '#FF4500'], 'Emergency', 'emergency')} {/* Vibrant orange tones */}
+      {renderButton('settings', ['#66BB6A', '#43A047'], 'Settings', 'settings')} {/* Fresh green tones */}
+      {renderButton('account-circle', ['#FFD54F', '#FFB300'], 'Profile', 'profile')} {/* Bright yellow tones */}
     </View>
   );
 };
@@ -48,35 +48,43 @@ const BottomComponent = ({ navigation, disableButton, isBottomComponentTemporari
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly', // Ensure even spacing
     alignItems: 'center',
-    width: '100%',
+    width: '100%', // Ensure full width
+    position: 'absolute', // Keep it pinned at the bottom
+    bottom: 0, // Attach to bottom of screen
+    backgroundColor: '#fff', 
     paddingVertical: 15,
     borderTopWidth: 1,
     borderTopColor: '#ddd',
+    elevation: 10, // Add some shadow for depth
   },
   gradientButton: {
-    width: 70, // Increased size for easier tapping
-    height: 70, // Increased size for easier tapping
-    borderRadius: 35, // Making the button circular
+    width: 75,  // Increased size for easier tapping
+    height: 75, // Increased size for easier tapping
+    borderRadius: 37.5, // Making the button circular
     overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.10,
-    shadowRadius: 100,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
     elevation: 5,
+    marginBottom: 10, // Slight margin for spacing between buttons
+  },
+  disabledButton: {
+    opacity: 0.5, // Disable opacity when button is inactive
   },
   gradientBackground: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 35, // Ensures circular shape
-    padding: 10, // Adding padding for the icons
+    borderRadius: 37.5, // Ensures circular shape
+    padding: 12, // Padding to ensure icons are centered
   },
   iconLabel: {
     color: 'white',
-    fontSize: 12, // Adjust size based on your design
-    marginTop: 5, // Optional for spacing the label
+    fontSize: 12,
+    marginTop: 5,
   },
 });
 

@@ -4,14 +4,14 @@ import axios from 'axios';
 import { Audio } from 'expo-av';
 import { Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';  // Import useFocusEffect hook
+import { useFocusEffect } from '@react-navigation/native';
 import BottomComponent from './Bottom';
 
 const { width } = Dimensions.get('window');
 const API_URL = 'http://192.168.18.81:8000/api';
 
 const HomeScreen = ({ navigation }) => {
-  const [name, setName] = useState(''); // Store the user's name
+  const [name, setName] = useState('');
   const [emergencyContact, setEmergencyContact] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -64,15 +64,15 @@ const HomeScreen = ({ navigation }) => {
 
   const handlePress = async (type) => {
     if (type === 'notify') {
-      if (isButtonDisabled || isBottomComponentTemporarilyDisabled) return; // Prevent multiple clicks
-      setIsButtonDisabled(true); // Disable button
+      if (isButtonDisabled || isBottomComponentTemporarilyDisabled) return;
+      setIsButtonDisabled(true);
       setIsBottomComponentTemporarilyDisabled(true);
 
       playSound();
 
       if (!emergencyContact || emergencyContact === 'No emergency contact set') {
         Alert.alert('Error', 'No emergency contact found.');
-        setIsButtonDisabled(false); // Re-enable button if no contact is found
+        setIsButtonDisabled(false);
         setIsBottomComponentTemporarilyDisabled(false);
         return;
       }
@@ -90,12 +90,12 @@ const HomeScreen = ({ navigation }) => {
       const phoneRegex = /^\+63 \d{3} \d{3} \d{4}$/;
       if (!phoneRegex.test(formattedEmergencyContact)) {
         Alert.alert('Error', 'Invalid phone number format. Ensure it starts with +63 and is followed by 10 digits with spaces.');
-        setIsButtonDisabled(false); // Re-enable button on error
+        setIsButtonDisabled(false);
         setIsBottomComponentTemporarilyDisabled(false);
         return;
       }
 
-      const message = `This is a notify message from ${name}. Please take action immediately.`;
+      const message = `This is a notification from ${name}. I need your help. Please take action immediately.`;
 
       const dataToSend = {
         emergency_contact: formattedEmergencyContact,
@@ -138,7 +138,7 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity
             style={[
               styles.circleButton,
-              (isButtonDisabled || isBottomComponentTemporarilyDisabled) && { backgroundColor: '#A9A9A9' }
+              { opacity: isButtonDisabled || isBottomComponentTemporarilyDisabled ? 0.6 : 1 }
             ]}
             onPress={() => handlePress('notify')}
             disabled={isButtonDisabled || isBottomComponentTemporarilyDisabled}
@@ -157,8 +157,8 @@ const HomeScreen = ({ navigation }) => {
 
       <BottomComponent
         navigation={navigation}
-        disableButton={'Home'} // Ensure this is a string
-        isBottomComponentTemporarilyDisabled={isBottomComponentTemporarilyDisabled} // Ensure this is a boolean
+        disableButton={'Home'}
+        isBottomComponentTemporarilyDisabled={isBottomComponentTemporarilyDisabled}
       />
     </View>
   );
@@ -169,61 +169,61 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#F8F8F8', // Soft background color for a calm, non-intrusive look
-    marginTop: 20,
-    paddingHorizontal: 15,
+    backgroundColor: '#F0F4F8', // Soft light background color for a modern feel
   },
   header: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 30,
+    marginBottom: 10,
     textAlign: 'center',
-    fontSize: 28, // Clear, readable font size
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontWeight: '600',
     color: '#333',
+    letterSpacing: 0.5,
   },
   description: {
     textAlign: 'center',
-    fontSize: 20, // Slightly larger text for better readability
+    fontSize: 18,
     color: '#666',
-    marginBottom: 30, // Extra spacing for better readability
+    fontWeight: '300',
   },
   buttonContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 180,
   },
   circleButton: {
-    width: width * 0.8,  // Larger button for easier interaction
-    height: width * 0.8,
-    borderRadius: (width * 0.8) / 2,
+    width: width * 0.75,
+    height: width * 0.75,
+    borderRadius: (width * 0.75) / 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4682B4', // Calming blue for a safe emergency tone
-    elevation: 8, // Moderate outer shadow
-    shadowColor: '#2F4F4F', // Darker shadow for better visibility
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.4,
+    backgroundColor: '#0077CC', // Modern blue color
+    elevation: 10,
+    shadowColor: '#1C1C1C', 
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
     shadowRadius: 10,
     borderWidth: 2,
-    borderColor: '#5F9EA0', // Slightly lighter blue for glossy look
+    borderColor: '#005fa3',
   },
   innerShadow: {
-    width: '90%',
-    height: '90%',
-    borderRadius: (width * 0.8) / 2,
-    backgroundColor: '#5A9FD4', // Slightly lighter blue for inner depth
+    width: '85%',
+    height: '85%',
+    borderRadius: (width * 0.75) / 2,
+    backgroundColor: '#005fa3', // Darker shade for inner button
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#1E3F66',
+    shadowColor: '#003b6b',
     shadowOffset: { width: 0, height: -5 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
   },
   buttonTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
     color: 'white',
+    marginTop: 10,
   },
 });
 

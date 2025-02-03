@@ -113,7 +113,7 @@ const ProfileScreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={30} color="#007bff" />
+        <Icon name="arrow-back" size={35} color="#007bff" />
       </TouchableOpacity>
 
       {loading ? (
@@ -126,11 +126,11 @@ const ProfileScreen = ({ navigation }) => {
               <Image source={{ uri: profilePic }} style={styles.profilePic} />
             ) : (
               <View style={styles.profilePicPlaceholder}>
-                <Icon name="person" size={50} color="#fff" />
+                <Icon name="person" size={80} color="#fff" />
               </View>
             )}
             <TouchableOpacity style={styles.editButton} onPress={handleEditProfilePic}>
-              <Icon name="edit" size={20} color="#fff" />
+              <Icon name="edit" size={25} color="#fff" />
             </TouchableOpacity>
           </View>
 
@@ -167,9 +167,10 @@ const ProfileScreen = ({ navigation }) => {
               <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
           )}
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-              <Text style={styles.logoutButtonText}>Log out</Text>
-            </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Text style={styles.logoutButtonText}>Log out</Text>
+          </TouchableOpacity>
         </>
       )}
     </View>
@@ -189,24 +190,24 @@ const styles = StyleSheet.create({
     top: 40,
     left: 20,
     backgroundColor: 'transparent',
-    padding: 10,
+    padding: 15,
   },
   profilePicContainer: {
     position: 'relative',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   profilePic: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
     marginBottom: 10,
     borderWidth: 3,
     borderColor: '#007bff',
   },
   profilePicPlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
     backgroundColor: '#ccc',
     justifyContent: 'center',
     alignItems: 'center',
@@ -217,27 +218,35 @@ const styles = StyleSheet.create({
     bottom: 5,
     right: 5,
     backgroundColor: '#007bff',
-    borderRadius: 15,
-    padding: 5,
+    borderRadius: 20,
+    padding: 8,
   },
   label: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     alignSelf: 'flex-start',
-    marginBottom: 5,
+    marginBottom: 8,
     marginTop: 15,
   },
   input: {
     width: '100%',
-    height: 40,
+    height: 45,
     borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
+    borderRadius: 10,
+    paddingLeft: 15,
+    fontSize: 18,
   },
   inputText: {
     width: '100%',
-    paddingLeft: 10,
+    paddingLeft: 15,
+    fontSize: 18,
+  },
+  inputTextNonEditable: {
+    alignSelf: 'flex-start',
+    paddingLeft: 15,
+    fontSize: 18,
+    color: '#555',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -248,47 +257,43 @@ const styles = StyleSheet.create({
   saveButton: {
     flex: 1,
     backgroundColor: '#28a745',
-    paddingVertical: 12,
-    borderRadius: 8,
+    paddingVertical: 15,
+    borderRadius: 10,
     marginRight: 10,
     alignItems: 'center',
   },
   cancelButton: {
     flex: 1,
     backgroundColor: '#dc3545',
-    paddingVertical: 12,
-    borderRadius: 8,
+    paddingVertical: 15,
+    borderRadius: 10,
     marginLeft: 10,
     alignItems: 'center',
   },
   editProfileButton: {
     backgroundColor: '#007bff',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginTop: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+    marginTop: 25,
   },
   logoutButton: {
     marginTop: 20,
     backgroundColor: '#dc3545',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    borderRadius: 10,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   logoutButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
   },
-  inputTextNonEditable: {
-    alignSelf: 'flex-start',
-    paddingLeft: 10,
-  }
 });
 
 export default ProfileScreen;

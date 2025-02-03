@@ -11,10 +11,10 @@ const { width } = Dimensions.get('window');
 const API_URL = 'http://192.168.18.81:8000/api';
 
 const EmergencyScreen = ({ navigation }) => {
-  const [name, setName] = useState(''); // Store the user's name
+  const [name, setName] = useState('');
   const [emergencyContact, setEmergencyContact] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Track button disable status
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [isBottomComponentTemporarilyDisabled, setIsBottomComponentTemporarilyDisabled] = useState(false);
 
   // Play the emergency alert sound
@@ -36,7 +36,6 @@ const EmergencyScreen = ({ navigation }) => {
     }, [])
   );
 
-  // Function to fetch user details
   const getUserDetails = async () => {
     try {
       setLoading(true);
@@ -67,7 +66,6 @@ const EmergencyScreen = ({ navigation }) => {
     }
   };
 
-  // Handle button press for sending emergency SMS
   const handleEmergencyPress = async () => {
     if (isButtonDisabled) return; // Prevent multiple clicks
     setIsButtonDisabled(true); // Disable button
@@ -132,7 +130,7 @@ const EmergencyScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text h4 style={styles.header}>Emergency Mode</Text>
+      <Text style={styles.header}>Emergency Mode</Text>
       <Text style={styles.description}>
         Press the button below for an emergency alert.
       </Text>
@@ -141,15 +139,13 @@ const EmergencyScreen = ({ navigation }) => {
         <Text>Loading...</Text>
       ) : (
         <View style={styles.buttonContainer}>
-          {/* Emergency Button with Inner Shadow Effect */}
           <TouchableOpacity
-            style={[styles.circleButton, isButtonDisabled && { backgroundColor: '#A9A9A9' }]} // Gray out when disabled
+            style={[styles.circleButton, isButtonDisabled && styles.buttonDisabled]}
             onPress={handleEmergencyPress}
-            disabled={isButtonDisabled} // Disable interaction
+            disabled={isButtonDisabled}
             accessibilityLabel="Emergency Button"
             accessibilityRole="button"
           >
-            {/* Inner Shadow Effect inside the Button */}
             <View style={styles.innerShadow}>
               <Icon name="warning" color="white" size={60} />
               <Text style={styles.buttonTitle}>
@@ -163,7 +159,7 @@ const EmergencyScreen = ({ navigation }) => {
       <BottomComponent 
         navigation={navigation} 
         disableButton={'Emergency'} 
-        isBottomComponentTemporarilyDisabled={true} // Passing the new state
+        isBottomComponentTemporarilyDisabled={isBottomComponentTemporarilyDisabled} 
       />
     </View>
   );
@@ -174,63 +170,67 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
-    marginTop: 20,
-    paddingHorizontal: 15,
+    backgroundColor: '#F0F4F8',
   },
   header: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 30,
+    marginBottom: 15,
     textAlign: 'center',
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 32,
+    fontWeight: '600',
     color: '#333',
+    letterSpacing: 0.5,
   },
   description: {
     textAlign: 'center',
     fontSize: 18,
     color: '#555',
-    marginBottom: 30,
+    fontWeight: '300',
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 40,
+    justifyContent: 'center',  // Centers the button vertically
+    alignItems: 'center',      // Centers the button horizontally
+    marginBottom: 180,
   },
   circleButton: {
-    width: width * 0.8,
-    height: width * 0.8,
-    borderRadius: (width * 0.8) / 2,
+    width: width * 0.75,
+    height: width * 0.75,
+    borderRadius: (width * 0.75) / 2,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FF4C4C', // Emergency Red
-    elevation: 8,
+    elevation: 10,
     shadowColor: '#B83A3A',
     shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.5,
     shadowRadius: 10,
     borderWidth: 2,
-    borderColor: '#FF1C1C', // Slightly darker red border
+    borderColor: '#FF1C1C',
+    transition: 'background-color 0.3s ease', // Smooth background change transition
+  },
+  buttonDisabled: {
+    backgroundColor: '#E57373', // Light red when disabled
+    opacity: 0.7,
   },
   innerShadow: {
-    width: '90%',
-    height: '90%',
-    borderRadius: (width * 0.8) / 2,
-    backgroundColor: '#FF6347', // Lighter red for the inner shadow
+    width: '85%',
+    height: '85%',
+    borderRadius: (width * 0.75) / 2,
+    backgroundColor: '#FF6347',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#D85A5A',
     shadowOffset: { width: 0, height: -5 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.4,
     shadowRadius: 8,
   },
   buttonTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: 'white',
+    marginTop: 10,
   },
 });
-
 
 export default EmergencyScreen;
