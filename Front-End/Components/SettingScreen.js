@@ -13,12 +13,12 @@ const SettingsScreen = ({ navigation }) => {
       <Text style={styles.title}>Settings</Text>
 
       {/* Privacy Policy */}
-      <TouchableOpacity style={styles.settingItem} onPress={() => alert('Privacy Policy')}>
+      <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('Privacy')}>
         <Text style={styles.settingText}>Privacy Policy</Text>
       </TouchableOpacity>
 
       {/* About Section */}
-      <TouchableOpacity style={styles.settingItem} onPress={() => alert('App Version: 1.0.0')}>
+      <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('About')}>
         <Text style={styles.settingText}>About</Text>
       </TouchableOpacity>
 
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    fontSize: 28,  // Slightly larger title for better readability
+    fontSize: 30,  // Slightly larger title for better readability
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
     marginTop: 60, 
-    color: '#2C3E50',  // Darker color for better contrast
+    color: '#0056b3', 
   },
   settingItem: {
     flexDirection: 'row',

@@ -1,57 +1,54 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL } from '../config';
+import { API_URL } from "../config";
 
 const ProfileScreen = ({ navigation }) => {
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("johndoe@example.com");
   const [profilePic, setProfilePic] = useState(null);  // Null initially to show placeholder
   const [emergencyContact, setEmergencyContact] = useState("No emergency contact set");
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // To toggle between edit and view mode
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null); // Store user ID
+  const [dummyContacts, setDummyContacts] = useState([]); // State for dummy contacts
 
   useEffect(() => {
     getUserDetails();
+    loadDummyContacts(); // Load dummy contacts when the component mounts
   }, []);
-  
+
   const getUserDetails = async () => {
     try {
       setLoading(true);
       const token = await AsyncStorage.getItem("userToken");
-  
+
       if (!token) {
         Alert.alert("Error", "User not authenticated. Please log in.");
         navigation.navigate("Login");
         return;
       }
-  
+
       const response = await axios.get(`${API_URL}/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-  
+
       const userData = response.data;
       setUserId(userData.id); // Set the user ID
       setName(userData.name);
       setEmail(userData.email);
       setEmergencyContact(userData.emergency_contact || "No emergency contact set");
       setProfilePic(userData.profile_pic || null); // Set the profile picture if available
-  
-      // Debugging values:
-      console.log("Name:", userData.name);
-      console.log("Email:", userData.email);
-      console.log("Emergency Contact:", userData.emergency_contact || "No emergency contact set");
     } catch (error) {
       console.log("Error fetching user details:", error);
       Alert.alert("Error", "Failed to load user data.");
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   const handleSave = async () => {
     try {
@@ -62,11 +59,11 @@ const ProfileScreen = ({ navigation }) => {
         `${API_URL}/user/update/${userId}`, // Use the user ID in the URL for updating the correct user
         {
           name,
-          emergency_contact: emergencyContact // Send the phone number as is (no formatting)
+          emergency_contact: emergencyContact, // Send the phone number as is (no formatting)
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+
       if (response.status === 200) {
         Alert.alert("Success", "Profile updated successfully!");
         setIsEditing(false); // Disable editing after saving
@@ -75,7 +72,7 @@ const ProfileScreen = ({ navigation }) => {
       console.log("Update Error:", error);
       Alert.alert("Error", "Failed to update profile.");
     }
-  };  
+  };
 
   const handleEditProfilePic = async () => {
     try {
@@ -96,20 +93,73 @@ const ProfileScreen = ({ navigation }) => {
   const handleLogout = async () => {
     try {
       // Remove the token and user-related data from AsyncStorage
-      await AsyncStorage.removeItem('userToken');
-      await AsyncStorage.removeItem('emergencyContact');
-      await AsyncStorage.removeItem('userId');
-  
+      await AsyncStorage.removeItem("userToken");
+      await AsyncStorage.removeItem("emergencyContact");
+      await AsyncStorage.removeItem("userId");
+
+      // Clear the dummy contacts when logging out
+      setDummyContacts([]);
+
       // Redirect to the Login screen after logging out
-      navigation.navigate('Login');
+      navigation.navigate("Login");
     } catch (error) {
-      console.log('Error clearing AsyncStorage:', error);
-      Alert.alert('Error', 'An error occurred while logging out.');
+      console.log("Error clearing AsyncStorage:", error);
+      Alert.alert("Error", "An error occurred while logging out.");
     }
-  };  
+  };
+
+  // Load dummy contacts from AsyncStorage when the component mounts
+  const loadDummyContacts = async () => {
+    try {
+      const savedContacts = await AsyncStorage.getItem("dummyContacts");
+      if (savedContacts) {
+        setDummyContacts(JSON.parse(savedContacts)); // Load contacts into state
+      }
+    } catch (error) {
+      console.log("Error loading dummy contacts from AsyncStorage:", error);
+    }
+  };
+
+  // Save dummy contacts to AsyncStorage when they change
+  useEffect(() => {
+    saveDummyContacts(dummyContacts);
+  }, [dummyContacts]);
+
+  // Save dummy contacts to AsyncStorage
+  const saveDummyContacts = async (contacts) => {
+    try {
+      await AsyncStorage.setItem("dummyContacts", JSON.stringify(contacts)); // Save updated contacts
+    } catch (error) {
+      console.log("Error saving dummy contacts to AsyncStorage:", error);
+    }
+  };
+
+  // Add new dummy contact with separate input fields for name and phone number
+  const addDummyContact = () => {
+    const newContact = {
+      id: Math.random().toString(36).substring(7), // Generate a random ID
+      name: "",
+      phone: "",
+    };
+    setDummyContacts([...dummyContacts, newContact]);
+  };
+
+  // Handle changes in name or phone number for each dummy contact
+  const handleContactChange = (id, field, value) => {
+    setDummyContacts(
+      dummyContacts.map((contact) =>
+        contact.id === id ? { ...contact, [field]: value } : contact
+      )
+    );
+  };
+
+  // Remove a dummy contact
+  const removeDummyContact = (id) => {
+    setDummyContacts(dummyContacts.filter((contact) => contact.id !== id));
+  };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Icon name="arrow-back" size={35} color="#007bff" />
@@ -135,7 +185,7 @@ const ProfileScreen = ({ navigation }) => {
 
           {/* Profile Information */}
           <Text style={styles.label}>Email</Text>
-          <Text style={styles.inputTextNonEditable}>{email || 'No email provided'}</Text>
+          <Text style={styles.inputTextNonEditable}>{email || "No email provided"}</Text>
 
           <Text style={styles.label}>Name</Text>
           {isEditing ? (
@@ -144,11 +194,46 @@ const ProfileScreen = ({ navigation }) => {
             <Text style={styles.inputText}>{name}</Text>
           )}
 
-          <Text style={styles.label}>Emergency Contact</Text>
+          <Text style={styles.label}>Emergency Contacts</Text>
           {isEditing ? (
-            <TextInput style={styles.input} value={emergencyContact} onChangeText={setEmergencyContact} keyboardType="phone-pad" />
+            <TextInput
+              style={styles.input}
+              value={emergencyContact}
+              onChangeText={setEmergencyContact}
+              keyboardType="phone-pad"
+            />
           ) : (
             <Text style={styles.inputText}>{emergencyContact}</Text>
+          )}
+
+          {/* Dummy Contacts Section */}
+          {dummyContacts.map((contact) => (
+            <View key={contact.id} style={styles.dummyContactContainer}>
+              {isEditing ? (
+                <TextInput
+                  style={styles.dummyContactInput}
+                  value={contact.phone}
+                  onChangeText={(text) => handleContactChange(contact.id, "phone", text)}
+                  placeholder="Phone"
+                  keyboardType="phone-pad"
+                />
+              ) : (
+                <Text style={styles.inputText}>{contact.phone}</Text> 
+              )}
+
+              {isEditing && (
+                <TouchableOpacity onPress={() => removeDummyContact(contact.id)} style={styles.deleteButton}>
+                  <Icon name="delete" size={20} color="#dc3545" />
+                </TouchableOpacity>
+              )}
+            </View>
+          ))}
+
+          {/* Add Contact Button */}
+          {isEditing && (
+            <TouchableOpacity style={styles.addContactButton} onPress={addDummyContact}>
+              <Text style={styles.buttonText}>Add Contact</Text>
+            </TouchableOpacity>
           )}
 
           {/* Buttons */}
@@ -166,34 +251,37 @@ const ProfileScreen = ({ navigation }) => {
               <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
           )}
-          
+
           <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <Text style={styles.logoutButtonText}>Log out</Text>
           </TouchableOpacity>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "flex-start", // Ensure content starts below the fixed profile picture
+    alignItems: "center",
+    paddingTop: 100,  // Add enough top padding to prevent overlap with profile picture
     padding: 20,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: "#f8f9fa",
   },
+  
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
     left: 20,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     padding: 15,
   },
   profilePicContainer: {
-    position: 'relative',
-    marginBottom: 30,
+    position: "relative",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   profilePic: {
     width: 150,
@@ -201,76 +289,78 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     marginBottom: 10,
     borderWidth: 3,
-    borderColor: '#007bff',
+    borderColor: "#007bff",
   },
   profilePicPlaceholder: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    backgroundColor: '#ccc',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 10,
   },
   editButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 5,
     right: 5,
-    backgroundColor: '#007bff',
+    backgroundColor: "#007bff",
     borderRadius: 20,
     padding: 8,
   },
   label: {
     fontSize: 20,
-    fontWeight: 'bold',
-    alignSelf: 'flex-start',
+    fontWeight: "bold",
+    alignSelf: "flex-start",
     marginBottom: 8,
     marginTop: 15,
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 45,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 10,
     paddingLeft: 15,
     fontSize: 18,
+    marginBottom: 10,
   },
   inputText: {
-    width: '100%',
+    width: "100%",
     paddingLeft: 15,
     fontSize: 18,
+    marginBottom: 10,
   },
   inputTextNonEditable: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     paddingLeft: 15,
     fontSize: 18,
-    color: '#555',
+    color: "#555",
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
     marginTop: 20,
   },
   saveButton: {
     flex: 1,
-    backgroundColor: '#28a745',
+    backgroundColor: "#28a745",
     paddingVertical: 15,
     borderRadius: 10,
     marginRight: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   cancelButton: {
     flex: 1,
-    backgroundColor: '#dc3545',
+    backgroundColor: "#dc3545",
     paddingVertical: 15,
     borderRadius: 10,
     marginLeft: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   editProfileButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: "#007bff",
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 10,
@@ -278,20 +368,45 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     marginTop: 20,
-    backgroundColor: '#dc3545',
+    backgroundColor: "#dc3545",
     paddingVertical: 15,
     paddingHorizontal: 50,
     borderRadius: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   logoutButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  dummyContactContainer: {
+    width: "100%",
+  },
+  dummyContactInput: {
+    width: "100%",
+    paddingLeft: 15,
+    fontSize: 18,
+    height: 45,
+    marginBottom: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
+  addContactButton: {
+    backgroundColor: "#007bff",
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+    marginTop: 15,
   },
 });
 

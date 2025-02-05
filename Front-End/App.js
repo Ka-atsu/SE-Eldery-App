@@ -8,7 +8,10 @@ import LoginScreen from './Components/login';
 import ProfileScreen from './Components/ProfileScreen';
 import GetStartedScreen from './Components/GetStartedScreen';
 import HelpScreen from './Components/HelpScreen';
-import { LogBox } from 'react-native'; // Import LogBox
+import PrivacyScreen from './Components/PrivacyScreen';
+import TermsAndAgreement from './Components/TermsAndAgreement';
+import AboutScreen from './Components/AboutScreen';
+import { LogBox } from 'react-native'; 
 const Stack = createNativeStackNavigator();
 
 // Ignore specific warning
@@ -20,7 +23,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="GetStarted" 
+        initialRouteName="TermsAndAgreement" 
         screenOptions={{ headerShown: false }} 
       >
         <Stack.Screen name="Home" component={HomeScreen} />
@@ -30,6 +33,10 @@ const App = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Help" component={HelpScreen} />
+        <Stack.Screen name="Privacy" component={PrivacyScreen} />
+        <Stack.Screen name="TermsAndAgreement" component={TermsAndAgreement} />
+        <Stack.Screen name="About" component={AboutScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
