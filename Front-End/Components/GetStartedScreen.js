@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 const GetStartedScreen = ({ navigation }) => {
   return (
@@ -17,6 +17,18 @@ const GetStartedScreen = ({ navigation }) => {
         This is crucial as we will use your emergency contact for notifications in case of emergencies.
       </Text>
 
+       <View style={styles.imageRow}>
+          <Image
+            source={require('../assets/gsLogin.png')}  // Image 1
+            style={styles.image}
+          />
+          <Image
+            source={require('../assets/gsRegister.png')}  // Image 2 (use different image for Step 2)
+            style={styles.image}
+          />
+        </View>
+      
+
       {/* Step 2: Understanding Key Functionalities */}
       <Text style={styles.stepTitle}>Step 2: Key Features of SeniorReach</Text>
       <Text style={styles.stepDescription}>
@@ -24,8 +36,15 @@ const GetStartedScreen = ({ navigation }) => {
       </Text>
 
       <Text style={styles.feature}>• <Text style={styles.bold}>Notify Others</Text>: Send a message to your emergency contact with one click to let them know you need help.</Text>
+      <Image
+        source={require('../assets/Step1-b.png')}  // Image 1
+        style={styles.image}
+      />
       <Text style={styles.feature}>• <Text style={styles.bold}>Emergency Button</Text>: A quick emergency button that alerts your contact instantly.</Text>
-
+      <Image
+        source={require('../assets/Step2-a.png')}  // Image 1
+        style={styles.image}
+      />
       <Text style={styles.stepTitle}>Step 3: Customize Your Profile (optional)</Text>
       <Text style={styles.stepDescription}>
         Add a profile picture, update your name, and make sure your contact information is up-to-date.
@@ -94,6 +113,16 @@ const styles = StyleSheet.create({
     fontSize: 24,  // Larger button text
     fontWeight: 'bold',
     color: 'white',
+  },
+  imageRow: {
+    flexDirection: 'row',  // Arranges the images horizontally
+    justifyContent: 'space-between',  // Adds space between the images
+    marginBottom: 20,  // Adds space below the row of images
+  },
+  image: {
+    width: '48%',  // Adjust the width to fit both images on the same line (space them out a bit)
+    height: 300,
+    resizeMode: 'contain',  // Ensures the image maintains its aspect ratio
   },
 });
 

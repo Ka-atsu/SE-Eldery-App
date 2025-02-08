@@ -39,26 +39,86 @@ const HelpScreen = ({ navigation }) => {
 
       <View style={styles.imageRow}>
         <Image
-          source={require('../assets/Step1-a.png')}  // Image 1
+          source={require('../assets/Step2-b.png')}  // Image 1
           style={styles.image}
         />
         <Image
-          source={require('../assets/Step1-b.png')}  // Image 2 (use different image for Step 2)
+          source={require('../assets/Step2-a.png')}  // Image 2 (use different image for Step 2)
           style={styles.image}
         />
       </View>
 
       <Text style={styles.content}>
-        <Text style={styles.bold}>3. Edit Profile: </Text>You can edit your profile, including your name and emergency contact, from the "Profile" screen. Simply tap (the yellow button) on the home screen or emergency screen to access your profile.
-      </Text>
-
-      <Text style={styles.content}>
-        <Text style={styles.bold}>4. Logout: </Text>To log out, go to your profile screen and tap the "Log out" button.
+        <Text style={styles.bold}>3. Edit Profile: </Text>You can update your name and emergency contact information from the "Profile" screen. To do this, tap the yellow button on either the home screen or emergency screen. Then, click on "Edit Profile" to make changes.
       </Text>
 
       <View style={styles.imageRow}>
         <Image
-          source={require('../assets/Step1-a.png')}  // Image 1
+          source={require('../assets/Step3-a.png')}  // Image 1
+          style={styles.image}
+        />
+        <Image
+          source={require('../assets/Step3-b.png')}  // Image 2 (use different image for Step 2)
+          style={styles.image}
+        />
+      </View>
+
+      <Text style={styles.content}>
+        <Text style={styles.bold}>3A. Edit Profile: </Text>This is a text box where you can update your name and contacts. After making changes, click "Save Profile" to save your updates.
+      </Text>
+
+      <View style={styles.imageRow}>
+        <Image
+          source={require('../assets/Step3a-a.png')}  // Image 1
+          style={styles.image}
+        />
+        <Image
+          source={require('../assets/Step3a-b.png')}  // Image 2 (use different image for Step 2)
+          style={styles.image}
+        />
+      </View>
+
+      <Text style={styles.content}>
+        <Text style={styles.bold}>3B. Add Contacts: </Text>While you're in the "Edit Profile" section, simply click "Add" to include a new contact.
+      </Text>
+
+      <Image
+        source={require('../assets/Step3b-a.png')}  // Image 2 (use different image for Step 2)
+        style={styles.image}
+      />
+
+      <Text style={styles.content}>
+      <Text style={styles.bold}>4. Add Profile Picture: </Text>
+      Click on the Edit Picture (pencil icon). {"\n"}
+      Select your desired picture from your device. {"\n"}
+      Adjust the picture by moving it within the selection box. {"\n"}
+      Click Crop to finalize and set your new profile picture.
+      </Text>
+
+      
+
+      <View style={styles.imageRow}>
+        <Image
+          source={require('../assets/Step4-a.png')}  // Image 1
+          style={styles.image}
+        />
+        <Image
+          source={require('../assets/Step4-b.png')}  // Image 2 (use different image for Step 2)
+          style={styles.image}
+        />
+      </View>
+
+      <Image
+          source={require('../assets/Step4-c.png')}  // Image 2 (use different image for Step 2)
+          style={styles.image}
+      />
+      <Text style={styles.content}>
+        <Text style={styles.bold}>5. Logout: </Text>To log out, go to your profile screen and tap the "Log out" button.
+      </Text>
+
+      <View style={styles.imageRow}>
+        <Image
+          source={require('../assets/Step5.png')}  // Image 1
           style={styles.image}
         />
       </View>
