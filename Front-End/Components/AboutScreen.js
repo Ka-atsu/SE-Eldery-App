@@ -31,9 +31,27 @@ const AboutScreen = ({ navigation }) => {
           • Easy Profile Management: Update emergency contact details anytime.
         </Text>
       </View>
+      <Text style={styles.miniTitle}>
+        Who We Are
+      </Text>
+
+      <Text style={styles.developmentTitle}>
+          Meet Our Development Team
+      </Text>
+
+      <Text style={styles.developmentTeam}>
+        Product Owner: Tano, Russel Ken A.
+      </Text>
+      <Text style={styles.developmentTeam}>
+        Developer: Tallafer, Kent D.
+      </Text>
+      <Text style={styles.developmentTeam}>
+        UI/UX Designer: Melgar, Reigne Margaret R.
+      </Text>
     </ScrollView>
   );
 };
+
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -54,8 +72,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 25,
     textAlign: 'center',
-    marginTop: 80,
+    marginTop: 50,
     color: '#0056b3', 
+  },
+  developmentTitle: {
+    fontSize: 38,
+    fontWeight: 'bold',
+    marginBottom: 25,
+    color: '#0056b3',
+  },
+  miniTitle: {
+    fontSize: 20,
+    marginTop: 50,
+  },
+  developmentTeam: {
+    fontSize: 20,
   },
   content: {
     fontSize: 22, 

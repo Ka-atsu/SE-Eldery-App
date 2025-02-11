@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, BackHandler, Button } from 'react-native';
 import CheckBox from 'react-native-check-box'; // Import from the community package
 
 const TermsAndAgreementScreen = ({ navigation }) => {
@@ -11,6 +11,10 @@ const TermsAndAgreementScreen = ({ navigation }) => {
     } else {
       alert('You must agree to the terms and conditions before proceeding.');
     }
+  };
+
+  const handleExit = () => {
+    BackHandler.exitApp(); 
   };
 
   return (
@@ -44,6 +48,9 @@ const TermsAndAgreementScreen = ({ navigation }) => {
         <Text style={styles.checkboxLabel}>I Agree to the Terms and Agreement</Text>
       </View>
 
+      <TouchableOpacity style={styles.buttonDecline} onPress={handleExit}>
+        <Text style={styles.buttonText}>Decline</Text>
+      </TouchableOpacity>
       {/* Agree Button */}
       <TouchableOpacity
         style={[styles.button, !isAgreed && styles.disabledButton]}
@@ -90,6 +97,15 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#4CAF50',
+    paddingVertical: 15,
+    paddingHorizontal: 60,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+    elevation: 5,
+  },
+  buttonDecline: {
+    backgroundColor: '#CD5C5C',
     paddingVertical: 15,
     paddingHorizontal: 60,
     borderRadius: 10,
