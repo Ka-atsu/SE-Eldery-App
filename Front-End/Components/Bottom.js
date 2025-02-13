@@ -37,10 +37,10 @@ const BottomComponent = ({ navigation, disableButton, isBottomComponentTemporari
 
   return (
     <View style={styles.container}>
-      {renderButton('home', ['#6A74FF', '#3D59F9'], 'Home', 'home')} {/* Modern blue tones */}
-      {renderButton('warning', ['#FF7F50', '#FF4500'], 'Emergency', 'emergency')} {/* Vibrant orange tones */}
-      {renderButton('settings', ['#66BB6A', '#43A047'], 'Settings', 'settings')} {/* Fresh green tones */}
-      {renderButton('account-circle', ['#FFD54F', '#FFB300'], 'Profile', 'profile')} {/* Bright yellow tones */}
+      {renderButton('home', ['#6EC1E4', '#1E3A8A'], 'Home', 'home')} {/* Modern blue tones */}
+      {renderButton('warning', ['#FF6F61', '#D32F2F'], 'Emergency', 'emergency')} {/* Vibrant orange tones */}
+      {renderButton('settings', ['#66BB6A', '#388E3C'], 'Settings', 'settings')} {/* Fresh green tones */}
+      {renderButton('account-circle', ['#FFD54F', '#FF7F50'], 'Profile', 'profile')} {/* Bright yellow tones */}
     </View>
   );
 };
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     position: 'absolute', // Keep it pinned at the bottom
     bottom: 0, // Attach to bottom of screen
     backgroundColor: '#fff', 
-    paddingVertical: 15,
-    borderTopWidth: 1,
+    paddingVertical: 10,
+    borderTopWidth: 2,
     borderTopColor: '#ddd',
     elevation: 10, // Add some shadow for depth
   },
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 15,
     elevation: 5,
-    marginBottom: 10, // Slight margin for spacing between buttons
   },
   disabledButton: {
     opacity: 0.5, // Disable opacity when button is inactive

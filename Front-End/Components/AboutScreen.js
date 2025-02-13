@@ -7,7 +7,7 @@ const AboutScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={35} color="#007bff" />
+        <Icon name="arrow-back" size={35} color="#0056b3" />
       </TouchableOpacity>
 
       {/* About Content */}
@@ -19,18 +19,17 @@ const AboutScreen = ({ navigation }) => {
         update emergency contact information and access support, ensuring they stay safe and connected with loved ones.
       </Text>
       
-      <View style={styles.termsContainer}>
-        <Text style={styles.subTitle}>Key Features:</Text>
-        <Text style={styles.featureText}>
-          • Notify Mode: Send alerts to emergency contacts with a single tap.
-        </Text>
-        <Text style={styles.featureText}>
-          • Emergency Mode: Quickly notify loved ones in case of an emergency.
-        </Text>
-        <Text style={styles.featureText}>
-          • Easy Profile Management: Update emergency contact details anytime.
-        </Text>
-      </View>
+      <Text style={styles.subTitle}>Key Features:</Text>
+      <Text style={styles.featureText}>
+        • Notify Mode: Send alerts to emergency contacts with a single tap.
+      </Text>
+      <Text style={styles.featureText}>
+        • Emergency Mode: Quickly notify loved ones in case of an emergency.
+      </Text>
+      <Text style={styles.featureText}>
+        • Easy Profile Management: Update emergency contact details anytime.
+      </Text>
+     
       <Text style={styles.miniTitle}>
         Who We Are
       </Text>
@@ -56,73 +55,57 @@ const AboutScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    padding: 40, 
-    backgroundColor: '#ffffff',
-    paddingBottom: 50, 
+    padding: 40,  // More padding for spacing
+    backgroundColor: '#FFFFFF',
+    paddingBottom: 50,  // Enough space at the bottom
   },
   backButton: {
     position: 'absolute',
     top: 40,
-    left: 20,
+    left: 10,
     backgroundColor: 'transparent',
-    padding: 15,
+    padding: 10,
   },
   title: {
-    fontSize: 38, 
+    fontSize: 40, // Increased title size
     fontWeight: 'bold',
-    marginBottom: 25,
+    marginTop: 60,
+    marginBottom: 20,
     textAlign: 'center',
-    marginTop: 50,
-    color: '#0056b3', 
+    color: '#0056b3',
   },
   developmentTitle: {
-    fontSize: 38,
+    fontSize: 30, // Larger title for clarity
     fontWeight: 'bold',
-    marginBottom: 25,
+    marginBottom: 10,
     color: '#0056b3',
   },
   miniTitle: {
-    fontSize: 20,
-    marginTop: 50,
+    fontSize: 24, // Slightly larger for better visibility
+    marginTop: 20,
   },
   developmentTeam: {
-    fontSize: 20,
+    fontSize: 24,  // Increased font size for easier reading
   },
   content: {
-    fontSize: 22, 
-    lineHeight: 30, 
+    fontSize: 24, // Larger font for readability
+    lineHeight: 32, // Increased line height
     marginBottom: 30,
     textAlign: 'left',
     color: '#333',
   },
-  imageRow: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  image: {
-    width: 150,
-    height: 150,
-    resizeMode: 'contain',
-  },
-  termsContainer: {
-    marginTop: 30,
-    paddingHorizontal: 20,
-    backgroundColor: '#e0f7fa',
-    borderRadius: 10,
-    paddingVertical: 20,
-  },
   subTitle: {
-    fontSize: 28, 
+    fontSize: 30, // Increased subtitle size for emphasis
     fontWeight: 'bold',
-    color: '#007bff',
+    color: '#0056b3',
     marginBottom: 15,
     textAlign: 'center',
   },
   featureText: {
-    fontSize: 22,
-    lineHeight: 28,
+    fontSize: 24, // Larger text for key features
+    lineHeight: 30, // Spaced out for easy reading
     color: '#333',
-    marginBottom: 10,
+    marginBottom: 12,
     textAlign: 'left',
   },
 });

@@ -67,26 +67,26 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 40,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
   },
   header: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#2C3E50',
     textAlign: 'center',
+    marginTop: 20,
     marginBottom: 20,
   },
   text: {
     fontSize: 20,
-    color: '#555',
     lineHeight: 28,
-    marginBottom: 40,
+    marginBottom: 20,
+    color: '#333333',
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
   },
   checkbox: {
     marginRight: 15,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonDecline: {
-    backgroundColor: '#CD5C5C',
+    backgroundColor: '#FF7F50',
     paddingVertical: 15,
     paddingHorizontal: 60,
     borderRadius: 10,

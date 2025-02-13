@@ -7,7 +7,7 @@ const HelpScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={35} color="#007bff" />
+        <Icon name="arrow-back" size={35} color="#0056b3" />
       </TouchableOpacity>
 
       <Text style={styles.title}>Help</Text>
@@ -130,20 +130,20 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     padding: 40, // Increased padding for a more open layout
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     paddingBottom: 50,  
   },
   backButton: {
     position: 'absolute',
     top: 40,
-    left: 20,
+    left: 10,
     backgroundColor: 'transparent',
-    padding: 15,
+    padding: 10,
   },
   title: {
     fontSize: 38, // Larger title for better visibility
     fontWeight: 'bold',
-    marginBottom: 25,
+    marginBottom: 20,
     textAlign: 'center',
     marginTop: 60,
     color: '#0056b3',  // Contrasting color for clarity
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: 30, // Slightly larger subtitle
     fontWeight: 'bold',
-    marginTop: 30,
     textAlign: 'left',
     color: '#333',
   },
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold',
-    color: '#007bff',
+    color: '#0056b3',
   },
   imageRow: {
     flexDirection: 'row',  // Arranges the images horizontally

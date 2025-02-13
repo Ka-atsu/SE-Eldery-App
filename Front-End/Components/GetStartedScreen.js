@@ -77,25 +77,24 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 20,  // Larger font size
-    marginBottom: 30,
     textAlign: 'center',
-    color: '#555',
+    color: '#333333',
   },
   stepTitle: {
     fontSize: 24,  // Larger font size for section titles
     fontWeight: 'bold',
     marginTop: 30,
-    color: '#333',
+    color: '#2C3E50',
   },
   stepDescription: {
     fontSize: 20,  // Larger font size
     marginBottom: 20,
-    color: '#666',
+    color: '#333333',
   },
   feature: {
     fontSize: 20,  // Larger font size
     marginBottom: 15,
-    color: '#333',
+    color: '#2C3E50',
   },
   bold: {
     fontWeight: 'bold',
@@ -105,7 +104,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 60,  // Wider buttons for easier tapping
     borderRadius: 12,
-    marginTop: 50,  // More space to separate the button
     alignItems: 'center',
     elevation: 5,  // Shadow effect for button
   },

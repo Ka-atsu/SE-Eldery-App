@@ -7,7 +7,7 @@ const SettingsScreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={30} color="#007bff" />
+        <Icon name="arrow-back" size={35} color="#0056b3" />
       </TouchableOpacity>
 
       <Text style={styles.title}>Settings</Text>
@@ -33,22 +33,21 @@ const SettingsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#ffffff',
+    padding: 30,
+    backgroundColor: '#FFFFFF',
   },
   backButton: {
     position: 'absolute',
     top: 40,
-    left: 20,
+    left: 10,
     backgroundColor: 'transparent',
     padding: 10,
   },
   title: {
-    fontSize: 30,  // Slightly larger title for better readability
+    fontSize: 40,  // Slightly larger title for better readability
     fontWeight: 'bold',
-    marginBottom: 30,
     textAlign: 'center',
-    marginTop: 60, 
+    marginTop: 70, 
     color: '#0056b3', 
   },
   settingItem: {

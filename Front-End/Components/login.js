@@ -159,7 +159,7 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#ffffff' },
+  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#FFFFFF' },
   header: { fontSize: 24, textAlign: 'center', marginBottom: 30, fontWeight: 'bold' },
   input: { height: 45, borderColor: '#ccc', borderWidth: 1, marginBottom: 15, paddingLeft: 10, borderRadius: 8, backgroundColor: '#fff' },
   switchText: { color: '#007BFF', textAlign: 'center', marginTop: 10, fontWeight: 'bold' },

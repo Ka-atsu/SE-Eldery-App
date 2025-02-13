@@ -7,7 +7,7 @@ const PrivacyScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={35} color="#007bff" />
+        <Icon name="arrow-back" size={35} color="#0056b3" />
       </TouchableOpacity>
 
       {/* Terms and Agreement Section */}
@@ -32,32 +32,45 @@ const PrivacyScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    padding: 40, // Increased padding for a more open layout
-    backgroundColor: '#ffffff',
-    paddingBottom: 50, // Adjusted bottom padding for proper spacing
+    padding: 40,
+    backgroundColor: '#FFFFFF',
+    paddingBottom: 30,
   },
   backButton: {
     position: 'absolute',
     top: 40,
-    left: 20,
+    left: 10,
     backgroundColor: 'transparent',
-    padding: 15,
+    padding: 10,
   },
   termsContainer: {
-    marginTop: 60, // Adds space before the terms section
+    marginTop: 60,
   },
   title: {
-    fontSize: 38, // Larger title for better visibility
+    fontSize: 40, // Large font size for title
     fontWeight: 'bold',
-    marginBottom: 25,
+    marginBottom: 20,
     textAlign: 'center',
-    color: '#0056b3', 
+    color: '#0056b3',
   },
   text: {
-    fontSize: 18, // Increased font size for readability
-    color: '#555555',
-    lineHeight: 28, // Adjusted line height for better clarity
-    marginBottom: 20, // Added spacing between paragraphs
+    fontSize: 24, // Larger text for readability
+    color: '#333',
+    lineHeight: 30, // Improved line height for easier reading
+    marginBottom: 15 // More space between paragraphs
+  },
+  confirmButton: {
+    backgroundColor: '#007bff',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+    marginTop: 40,
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 22, // Large font size for the button text
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
 });
 

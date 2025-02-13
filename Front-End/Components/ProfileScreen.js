@@ -25,23 +25,28 @@ const ProfileScreen = ({ navigation }) => {
     try {
       setLoading(true);
       const token = await AsyncStorage.getItem("userToken");
-
+  
       if (!token) {
         Alert.alert("Error", "User not authenticated. Please log in.");
         navigation.navigate("Login");
         return;
       }
-
+  
+      // Fetch user data from the backend API
       const response = await axios.get(`${API_URL}/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       const userData = response.data;
       setUserId(userData.id); // Set the user ID
       setName(userData.name);
       setEmail(userData.email);
       setEmergencyContact(userData.emergency_contact || "No emergency contact set");
-      setProfilePic(userData.profile_pic || null); // Set the profile picture if available
+  
+      // Retrieve the profile picture URI from AsyncStorage and set it
+      const savedProfilePic = await AsyncStorage.getItem("profilePic");
+      setProfilePic(savedProfilePic || userData.profile_pic || null);
+  
     } catch (error) {
       console.log("Error fetching user details:", error);
       Alert.alert("Error", "Failed to load user data.");
@@ -49,6 +54,7 @@ const ProfileScreen = ({ navigation }) => {
       setLoading(false);
     }
   };
+  
 
   const handleSave = async () => {
     try {
@@ -81,14 +87,19 @@ const ProfileScreen = ({ navigation }) => {
         allowsEditing: true,
         quality: 1,
       });
-
+  
       if (result.assets && result.assets.length > 0) {
-        setProfilePic(result.assets[0].uri);
+        const imageUri = result.assets[0].uri;
+        setProfilePic(imageUri);
+  
+        // Save the URI to AsyncStorage
+        await AsyncStorage.setItem("profilePic", imageUri);
       }
     } catch (error) {
       Alert.alert("Error", "There was a problem opening the image picker.");
     }
   };
+  
 
   const handleLogout = async () => {
     try {
@@ -162,7 +173,7 @@ const ProfileScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={35} color="#007bff" />
+        <Icon name="arrow-back" size={35} color="#0056b3" />
       </TouchableOpacity>
 
       {loading ? (
@@ -171,17 +182,17 @@ const ProfileScreen = ({ navigation }) => {
         <>
           {/* Profile Picture */}
           <View style={styles.profilePicContainer}>
-            {profilePic ? (
-              <Image source={{ uri: profilePic }} style={styles.profilePic} />
-            ) : (
-              <View style={styles.profilePicPlaceholder}>
-                <Icon name="person" size={80} color="#fff" />
-              </View>
-            )}
-            <TouchableOpacity style={styles.editButton} onPress={handleEditProfilePic}>
-              <Icon name="edit" size={25} color="#fff" />
-            </TouchableOpacity>
-          </View>
+          {profilePic ? (
+            <Image source={{ uri: profilePic }} style={styles.profilePic} />
+          ) : (
+            <View style={styles.profilePicPlaceholder}>
+              <Icon name="person" size={80} color="#fff" />
+            </View>
+          )}
+          <TouchableOpacity style={styles.editButton} onPress={handleEditProfilePic}>
+            <Icon name="edit" size={25} color="#fff" />
+          </TouchableOpacity>
+        </View>
 
           {/* Profile Information */}
           <Text style={styles.label}>Email</Text>
@@ -267,16 +278,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start", // Ensure content starts below the fixed profile picture
     alignItems: "center",
     paddingTop: 100,  // Add enough top padding to prevent overlap with profile picture
-    padding: 20,
-    backgroundColor: "#f8f9fa",
+    padding: 40,
+    backgroundColor: "#FFFFFF",
   },
   
   backButton: {
-    position: "absolute",
+    position: 'absolute',
     top: 40,
-    left: 20,
-    backgroundColor: "transparent",
-    padding: 15,
+    left: 10,
+    backgroundColor: 'transparent',
+    padding: 10,
   },
   profilePicContainer: {
     position: "relative",
