@@ -48,8 +48,9 @@ const TermsAndAgreementScreen = ({ navigation }) => {
         <Text style={styles.checkboxLabel}>I Agree to the Terms and Agreement</Text>
       </View>
 
-      <TouchableOpacity style={styles.buttonDecline} onPress={handleExit}>
+      <TouchableOpacity style={[styles.buttonDecline, isAgreed && styles.disabledButton2]} onPress={handleExit} disabled={isAgreed}>
         <Text style={styles.buttonText}>Decline</Text>
+        
       </TouchableOpacity>
       {/* Agree Button */}
       <TouchableOpacity
@@ -115,6 +116,9 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: '#b0d9b0',
+  },
+  disabledButton2: {
+    backgroundColor: '#FFC8B8',
   },
   buttonText: {
     fontSize: 22,
