@@ -95,7 +95,7 @@ const HomeScreen = ({ navigation }) => {
         return;
       }
 
-      const message = `This is a notification from ${name}. I need your help. Please take action immediately.`;
+      const message = `This is a notification message from ${name}.`;
 
       const dataToSend = {
         emergency_contact: formattedEmergencyContact,

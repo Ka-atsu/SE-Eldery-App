@@ -107,6 +107,7 @@ const ProfileScreen = ({ navigation }) => {
       await AsyncStorage.removeItem("userToken");
       await AsyncStorage.removeItem("emergencyContact");
       await AsyncStorage.removeItem("userId");
+      await AsyncStorage.removeItem("profilePic");
 
       // Clear the dummy contacts when logging out
       setDummyContacts([]);

@@ -100,12 +100,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   button: {
-    backgroundColor: '#4CAF50',  // Green for positive action
-    paddingVertical: 20,
-    paddingHorizontal: 60,  // Wider buttons for easier tapping
-    borderRadius: 12,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 15,
+    paddingHorizontal: 60,
+    borderRadius: 10,
     alignItems: 'center',
-    elevation: 5,  // Shadow effect for button
+    marginTop: 20,
+    elevation: 5,
   },
   buttonText: {
     fontSize: 24,  // Larger button text

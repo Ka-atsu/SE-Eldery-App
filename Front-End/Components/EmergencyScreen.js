@@ -99,7 +99,7 @@ const EmergencyScreen = ({ navigation }) => {
       return;
     }
 
-    const message = `This is an emergency message from ${name}. Please take action immediately.`;
+    const message = `This is an emergency message from ${name}. I need your help.`;
     const dataToSend = {
       emergency_contact: formattedEmergencyContact,
       message: message,
